@@ -20,7 +20,7 @@ class InstallTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.home = Path(self.temp.name) / '使用者 space' / '.codex'
+        self.home = (Path(self.temp.name) / '使用者 space' / '.codex').resolve()
         self.data = fixture()
 
     def apply(self, expected='missing'):
@@ -30,7 +30,7 @@ class InstallTests(unittest.TestCase):
         user = Path(self.temp.name)
         explicit = user / '指定 空間'
         env = user / 'env'
-        self.assertEqual(resolve_home(environ={}, home=user), user / '.codex')
+        self.assertEqual(resolve_home(environ={}, home=user), (user / '.codex').resolve())
         self.assertEqual(resolve_home(environ={'CODEX_HOME': str(env)}), env.resolve())
         self.assertEqual(resolve_home(str(explicit), environ={'CODEX_HOME': str(env)}), explicit.resolve())
 
@@ -116,6 +116,23 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(lock.read_text(), 'another installer')
         self.assertFalse((self.home / 'AGENTS.md').exists())
 
+    @unittest.skipUnless(os.name == 'nt', 'Windows junction protection requires Windows')
+    def test_windows_junction_backup_rejected(self):
+        self.home.mkdir(parents=True)
+        target = self.home / 'AGENTS.md'
+        target.write_bytes(b'old')
+        outside = Path(self.temp.name) / 'outside'
+        outside.mkdir()
+        junction = self.home / 'backups'
+        subprocess.run(['cmd', '/c', 'mklink', '/J', str(junction), str(outside)], check=True, capture_output=True)
+        try:
+            with self.assertRaises(ValueError):
+                self.apply(digest(b'old'))
+            self.assertEqual(target.read_bytes(), b'old')
+            self.assertEqual(list(outside.iterdir()), [])
+        finally:
+            junction.rmdir()
+
     def test_git_reads_committed_bytes_and_rejects_dirty_source(self):
         repo = Path(self.temp.name) / 'repo 空白'
         repo.mkdir()
@@ -139,7 +156,7 @@ class InstallTests(unittest.TestCase):
         import sys
         command = [sys.executable, str(repo / 'scripts/install.py'), '--commit', commit,
                    '--codex-home', str(self.home)]
-        preview = json.loads(subprocess.check_output(command, cwd=self.temp.name))
+        preview = json.loads(subprocess.check_output(command, cwd=self.temp.name, env={**os.environ, 'PYTHONIOENCODING': 'ascii'}))
         self.assertEqual(preview['current_sha256'], 'missing')
         self.assertFalse(self.home.exists())
         applied = json.loads(subprocess.check_output(command + ['--apply', '--expect-current-sha256', 'missing'], cwd=self.temp.name))

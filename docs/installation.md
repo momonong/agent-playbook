@@ -50,7 +50,7 @@ uv run --locked python scripts/install.py --commit $playbookCommit --expect-curr
 - 首次安裝支援不存在的 AGENTS.md；更新時將原檔完整備份到 `backups/`。以固定 commit 建立 Markdown 快照，核心嵌入此裝置的快照絕對路徑。既有同名快照不同就停止。
 - 安裝使用排他鎖防止本安裝程式互撞；替換前再次核對原檔與指示來源，使用同目錄暫存檔及 `os.replace`。不要同時用其他編輯器修改 AGENTS.md；一般檔案 API 無法保證對不合作外部寫入者的絕對原子比較交換。
 - 同版本、同目錄、同內容重跑不產生新備份；若快照損壞仍停止。備份與舊快照保留，清理另行授權。
-- 不跟隨受管理檔案、快照或備份目錄的 symlink／junction。不處理作業系統 ACL 遷移：POSIX 保留 mode，Windows 使用目的地目錄繼承權限；有特殊 ACL 時先人工核對。
+- 不跟隨受管理檔案、快照或備份目錄的 symlink／junction；Windows 對受管理位置的 reparse point 一律停止，Python 3.11／3.12 都適用。不處理作業系統 ACL 遷移：POSIX 保留 mode，Windows 使用目的地目錄繼承權限；有特殊 ACL 時先人工核對。
 - 安裝程式核對落地內容，沒有修改 Codex 指示容量限制。核心約 8 KB，實際有效上限及其他專案指示仍由使用中的客戶端決定。
 - 成功後新開工作階段，確認讀到來源 SHA、快照位置及模型指南。既有對話不保證自動重載；既有模型／effort 設定不會因此切換。
 

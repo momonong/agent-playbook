@@ -75,13 +75,19 @@ def check_sources(home: Path):
     check(config)
 
 
-def payload_at(repo: Path, commit: str):
+def guide_commit(core: bytes) -> str:
+    text = core.decode("utf-8")
+    matches = re.findall(r"^<!-- agent-playbook guides-commit: ([0-9a-f]{40}) -->$", text, re.MULTILINE)
+    if len(matches) != 1 or "{{PLAYBOOK_" in text:
+        raise ValueError("Core must be directly copyable with one pinned guides-commit and no placeholders")
+    return matches[0]
+
+
+def documents_at(repo: Path, commit: str):
     def git(*args):
         return subprocess.check_output(["git", "-C", str(repo), *args])
     if not re.fullmatch(r"[0-9a-f]{40}", commit):
         raise ValueError("Use the complete 40-character commit SHA")
-    if git("rev-parse", "HEAD").decode().strip() != commit or git("status", "--porcelain").strip():
-        raise ValueError("Source must be a clean checkout at the requested commit")
     payload = {}
     for record in git("ls-tree", "-rz", commit).split(b"\0"):
         if not record:
@@ -96,7 +102,15 @@ def payload_at(repo: Path, commit: str):
     return payload
 
 
-def install(home: Path, commit: str, payload: dict[str, bytes], *, apply=False, expected=None):
+def payload_at(repo: Path, commit: str):
+    head = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "HEAD"]).decode().strip()
+    dirty = subprocess.check_output(["git", "-C", str(repo), "status", "--porcelain"]).strip()
+    if head != commit or dirty:
+        raise ValueError("Source must be a clean checkout at the requested commit")
+    return documents_at(repo, commit)
+
+
+def install(home: Path, commit: str, payload: dict[str, bytes], *, apply=False, expected=None, guide_payload=None):
     check_sources(home)
     target = home / "AGENTS.md"
     old = read_regular(target)
@@ -105,20 +119,20 @@ def install(home: Path, commit: str, payload: dict[str, bytes], *, apply=False, 
         raise ValueError("AGENTS.md changed since preview; inspect and preview again")
     if apply and expected is None:
         raise ValueError("Apply requires --expect-current-sha256 from a reviewed preview")
-    snapshot = home / "agent-playbook" / "versions" / commit
+    core_bytes = payload["instructions/codex.md"]
+    pinned = guide_commit(core_bytes)
+    if guide_payload is None:
+        if pinned != commit:
+            raise ValueError("Pinned guides require their own committed document payload")
+        guide_payload = payload
+    snapshot = home / "agent-playbook" / "versions" / pinned
     for parent in (snapshot, *snapshot.parents):
         if is_linked(parent):
             raise ValueError("Managed snapshot parents must not be symlinks or junctions")
     for guide in ("collaboration", "engineering", "model-selection", "service-integration"):
-        if f"guides/{guide}.md" not in payload:
+        if f"guides/{guide}.md" not in guide_payload:
             raise ValueError(f"Missing guide: {guide}")
-    template = payload["instructions/codex.md"].decode("utf-8")
-    if template.count("{{PLAYBOOK_COMMIT}}") != 1 or template.count("{{PLAYBOOK_SNAPSHOT}}") != 1:
-        raise ValueError("Invalid installation placeholders")
-    rendered = template.replace("{{PLAYBOOK_COMMIT}}", commit).replace("{{PLAYBOOK_SNAPSHOT}}", snapshot.as_posix()).encode("utf-8")
-    if b"{{PLAYBOOK_" in rendered:
-        raise ValueError("Unresolved installation placeholder")
-    payload = dict(payload, SOURCE_COMMIT=(commit + "\n").encode())
+    payload = dict(guide_payload, SOURCE_COMMIT=(pinned + "\n").encode())
     def verify_snapshot():
         actual = {p.relative_to(snapshot).as_posix() for p in snapshot.rglob("*") if p.is_file()}
         if actual != set(payload) or any(is_linked(p) for p in snapshot.rglob("*")):
@@ -127,9 +141,9 @@ def install(home: Path, commit: str, payload: dict[str, bytes], *, apply=False, 
             raise ValueError("Existing immutable snapshot differs from source")
     if snapshot.exists():
         verify_snapshot()
-    report = dict(source_commit=commit, snapshot=str(snapshot), target=str(target),
-                  current_sha256=old_hash, rendered_sha256=digest(rendered),
-                  rendered_bytes=len(rendered), mode="apply" if apply else "preview")
+    report = dict(source_commit=commit, guides_commit=pinned, snapshot=str(snapshot), target=str(target),
+                  current_sha256=old_hash, installed_sha256=digest(core_bytes),
+                  installed_bytes=len(core_bytes), mode="apply" if apply else "preview")
     if not apply:
         return report
     home.mkdir(parents=True, exist_ok=True)
@@ -154,7 +168,7 @@ def install(home: Path, commit: str, payload: dict[str, bytes], *, apply=False, 
                 if stage.exists():
                     shutil.rmtree(stage)
         verify_snapshot()
-        if old == rendered:
+        if old == core_bytes:
             report["unchanged"] = True
             return report
         mode = stat.S_IMODE(target.stat().st_mode) if old is not None else 0o600
@@ -174,7 +188,7 @@ def install(home: Path, commit: str, payload: dict[str, bytes], *, apply=False, 
         fd, temporary = tempfile.mkstemp(prefix=".AGENTS-", dir=home)
         try:
             with os.fdopen(fd, "wb") as stream:
-                stream.write(rendered)
+                stream.write(core_bytes)
                 stream.flush()
                 os.fsync(stream.fileno())
             os.chmod(temporary, mode)
@@ -185,7 +199,7 @@ def install(home: Path, commit: str, payload: dict[str, bytes], *, apply=False, 
         finally:
             if os.path.exists(temporary):
                 os.unlink(temporary)
-        if target.read_bytes() != rendered:
+        if target.read_bytes() != core_bytes:
             raise ValueError("Installed file verification failed")
         report["verified"] = True
         return report
@@ -205,10 +219,12 @@ def main():
     repo = Path(__file__).resolve().parents[1]
     try:
         payload = payload_at(repo, args.commit)
+        pinned = guide_commit(payload["instructions/codex.md"])
+        guides = documents_at(repo, pinned)
         if args.apply:
             subprocess.run(["git", "-C", str(repo), "merge-base", "--is-ancestor", args.commit, "origin/main"], check=True)
         print(json.dumps(install(resolve_home(args.codex_home), args.commit, payload,
-                                 apply=args.apply, expected=args.expect_current_sha256), ensure_ascii=False, indent=2))
+                                 apply=args.apply, expected=args.expect_current_sha256, guide_payload=guides), ensure_ascii=False, indent=2))
     except (ValueError, OSError, subprocess.CalledProcessError) as exc:
         parser.exit(1, f"Installation stopped: {exc}\n")
 

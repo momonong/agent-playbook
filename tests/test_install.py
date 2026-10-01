@@ -5,13 +5,13 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from scripts.install import digest, install, payload_at, resolve_home
+from scripts.install import digest, documents_at, guide_commit, install, payload_at, resolve_home
 
 SHA = 'a' * 40
 
 
 def fixture():
-    data = {'instructions/codex.md': b'{{PLAYBOOK_COMMIT}}\n`{{PLAYBOOK_SNAPSHOT}}`\n'}
+    data = {'instructions/codex.md': f'<!-- agent-playbook guides-commit: {SHA} -->\n# Portable core\n'.encode()}
     data.update({f'guides/{g}.md': g.encode() for g in ('collaboration', 'engineering', 'model-selection', 'service-integration')})
     return data
 
@@ -25,6 +25,17 @@ class InstallTests(unittest.TestCase):
 
     def apply(self, expected='missing'):
         return install(self.home, SHA, self.data, apply=True, expected=expected)
+
+    def test_repository_core_is_copyable_and_guides_match_pin(self):
+        repo = Path(__file__).resolve().parents[1]
+        core = (repo / 'instructions/codex.md').read_bytes()
+        pinned = guide_commit(core)
+        self.assertNotIn(b'{{PLAYBOOK_', core)
+        self.assertIn(('https://raw.githubusercontent.com/momonong/agent-playbook/' + pinned + '/').encode(), core)
+        committed = documents_at(repo, pinned)
+        for guide in ('collaboration', 'engineering', 'model-selection', 'service-integration'):
+            name = f'guides/{guide}.md'
+            self.assertEqual(committed[name], (repo / name).read_bytes())
 
     def test_native_home_and_explicit_precedence(self):
         user = Path(self.temp.name)
@@ -51,10 +62,27 @@ class InstallTests(unittest.TestCase):
         report = self.apply()
         self.assertTrue(report['verified'])
         current = (self.home / 'AGENTS.md').read_bytes()
-        self.assertIn(self.home.as_posix().encode('utf-8'), current)
+        self.assertEqual(current, self.data['instructions/codex.md'])
+        self.assertNotIn(str(self.home).encode('utf-8'), current)
         self.assertNotIn(b'{{PLAYBOOK_', current)
         self.assertTrue(self.apply(digest(current))['unchanged'])
         self.assertFalse((self.home / 'backups').exists())
+
+    def test_same_core_on_two_devices_and_separate_pinned_guides(self):
+        another = (Path(self.temp.name) / '另一台 Device' / '.codex').resolve()
+        self.apply()
+        install(another, 'b' * 40, self.data, apply=True, expected='missing', guide_payload=self.data)
+        self.assertEqual((self.home / 'AGENTS.md').read_bytes(), (another / 'AGENTS.md').read_bytes())
+        self.assertTrue((another / 'agent-playbook/versions' / SHA / 'SOURCE_COMMIT').exists())
+        self.assertFalse((another / 'agent-playbook/versions' / ('b' * 40)).exists())
+
+    def test_legacy_template_and_ambiguous_pin_rejected(self):
+        for value in (b'{{PLAYBOOK_COMMIT}}', self.data['instructions/codex.md'] * 2):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                guide_commit(value)
+        with self.assertRaises(ValueError):
+            install(self.home, 'b' * 40, self.data)
+        self.assertFalse(self.home.exists())
 
     def test_update_preserves_exact_backup(self):
         self.home.mkdir(parents=True)
@@ -62,7 +90,7 @@ class InstallTests(unittest.TestCase):
         (self.home / 'AGENTS.md').write_bytes(old)
         report = self.apply(digest(old))
         self.assertEqual(Path(report['backup']).read_bytes(), old)
-        self.assertEqual(digest((self.home / 'AGENTS.md').read_bytes()), report['rendered_sha256'])
+        self.assertEqual(digest((self.home / 'AGENTS.md').read_bytes()), report['installed_sha256'])
 
     def test_changed_target_and_missing_expected_rejected(self):
         self.home.mkdir(parents=True)
@@ -151,6 +179,12 @@ class InstallTests(unittest.TestCase):
         git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-m', 'fixture')
         commit = git('rev-parse', 'HEAD').decode().strip()
         self.assertEqual(payload_at(repo, commit), self.data)
+        pinned = commit
+        self.data['instructions/codex.md'] = self.data['instructions/codex.md'].replace(SHA.encode(), pinned.encode())
+        (repo / 'instructions/codex.md').write_bytes(self.data['instructions/codex.md'])
+        git('add', 'instructions/codex.md')
+        git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-m', 'pin earlier guides')
+        commit = git('rev-parse', 'HEAD').decode().strip()
         git('update-ref', 'refs/remotes/origin/main', commit)
         import json
         import sys
@@ -162,6 +196,8 @@ class InstallTests(unittest.TestCase):
         applied = json.loads(subprocess.check_output(command + ['--apply', '--expect-current-sha256', 'missing'], cwd=self.temp.name))
         self.assertTrue(applied['verified'])
         self.assertEqual(applied['source_commit'], commit)
+        self.assertEqual(applied['guides_commit'], pinned)
+        self.assertEqual((self.home / 'AGENTS.md').read_bytes(), self.data['instructions/codex.md'])
         (repo / 'extra.py').write_text('# changed\n')
         with self.assertRaises(ValueError):
             payload_at(repo, commit)

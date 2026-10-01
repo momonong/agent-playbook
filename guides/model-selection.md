@@ -7,11 +7,11 @@
 | 工作 | 模型 ID | Effort |
 |---|---|---|
 | 新 main：需求、研究假設與重要取捨 | `gpt-6-astra` | `high` |
-| 新 orchestrate：相依、整合及階段判斷 | `gpt-6-sol` | `high` |
-| 新 orchestrate：規格已定、例行調度，容易核對 | `gpt-6-sol` | `medium` 可選，仍需判斷時用 `high` |
-| 一般與複雜開發 task | `gpt-6-sol` | `high` |
+| 新 orchestrate：相依、整合及階段判斷 | `gpt-6.1-sol` | `high` |
+| 新 orchestrate：規格已定、例行調度，容易核對 | `gpt-6.1-sol` | `medium` 可選，仍需判斷時用 `high` |
+| 一般與複雜開發 task | `gpt-6.1-sol` | `high` |
 | 高不確定性、困難根因、重大架構取捨、持續深度判斷的研究實作 task | `gpt-6-astra` | `high` |
-| 明確、小範圍、容易驗證的局部修改 | `gpt-6-sol` | `medium` |
+| 明確、小範圍、容易驗證的局部修改 | `gpt-6.1-sol` | `medium` |
 | 機械轉換、資料抽取與結構化整理 | `gpt-6-luna` | `high` 預設；簡單且可可靠驗證時可用 `medium` |
 
 - 新 orchestrate 若確需高度不確定的跨系統規劃，可選 Astra High；不因 task 多、等待久或單純轉傳就升級。
@@ -41,3 +41,12 @@
 - 模型更名、可用性或政策更新時，保留此版本的已確認 ID，經使用者決策後更新；不把查到的新模型自動替換進配置。
 
 2026-09-30 使用者確認新增兩項彈性中的模型部分：新建例行調度或機械處理可依難度用 Medium，其餘主要工作維持 High。所有既有任務設定與授權邊界保留。
+
+
+## 2026-10-02 模型更新
+
+使用者要求因應 Codex 新模型更新配置並合併、推送。原本使用 `gpt-6-sol` 的新建任務改為 `gpt-6.1-sol`；Astra／Luna 的角色及 High／Medium 原則保留。本文的 Sol 簡稱皆指表中 GPT-6.1 Sol，不使用會自行漂移的 latest 別名。
+
+[官方模型頁](https://developers.openai.com/api/docs/models/gpt-6.1-sol)將 GPT-6.1 Sol 定位為兼顧複雜工作能力與成本的選擇，支援本政策使用的 Medium／High；[模型家族指南](https://developers.openai.com/api/docs/guides/latest-model)仍區分 Astra、Sol、Luna。這支持延續原分工，但不是此配置已在使用者專案勝過其他配置的實驗證據。
+
+本次也核對了 Codex 派工工具列出的 `gpt-6.1-sol` 和 `medium`／`high` 可選值；模型實際可用性仍需逐次依執行端工具核對。API 文件與 Codex UI／派工工具的 effort／速度選項不保證完全相同，不互相推定。更新指示不會變更現有對話、全域預設模型或訂閱權限。

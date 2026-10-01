@@ -1,0 +1,6 @@
+* text=auto
+*.md text eol=lf
+*.py text eol=lf
+*.toml text eol=lf
+*.yml text eol=lf
+archive/original-2026-09-30.md -text

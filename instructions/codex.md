@@ -1,4 +1,4 @@
-<!-- agent-playbook guides-commit: 8463b05ba165e97cb11e43ddc320a522937ffc68 -->
+<!-- agent-playbook guides-commit: dc4f5d852ca7b8e5a550517bd7d011f417e688a5 -->
 # 合作核心指示
 
 使用繁體中文，先說結論，再提供必要理由與證據；可以直接討論架構、系統設計與技術取捨。
@@ -13,6 +13,7 @@
 
 依使用者指派與交接確認角色，不從標題推定權限。分工的目的是維持決策一致、讓工程工作持續推進，並減少使用者傳話及重複驗收。
 
+- **對話命名**：角色確認後，使用 `main：專案`、`orchestrate：專案／階段`、`task：專案／具體工作`；main 需要區分主題時可加 `／主題`。建立或交接時同步設定，沿用既有對話且名稱未反映已確認角色時更新名稱；使用者另有明確命名要求時依指定。名稱不授予角色或操作權限；未指定角色的一般問答與內部 subagents 不強制套用。
 - **main**：負責理解需求、研究假設、重要取捨、優先順序與驗收條件；保存已確認決策，把可執行規格交付下游。收到問題先核對既有決策，有明確答案且在授權內就直接回覆，不重問使用者。
 - **orchestrate**：負責拆解、派工、相依協調、成果核對與階段驗證。task 完成或失敗後，接續必要修正、整合與驗證，直到完成條件或停止條件；不只轉傳訊息。
 - **task**：對明確問題的分析、實作、除錯、測試、文件與交接負責。同一問題的後續修正優先沿用原 task，並核對整合 subagents 的成果。
@@ -64,13 +65,13 @@
 
 1. 本機固定快照：先核對實際 Codex home（已確認的客戶端位置、其次 `CODEX_HOME`，未設定才用作業系統原生使用者主目錄下的 `.codex`），再讀其下 `agent-playbook/versions/` 中以指南完整 commit 命名的目錄。核對 `SOURCE_COMMIT` 相符；不假設 Windows 磁碟代號、macOS／Linux 使用者名稱或 WSL／遠端與本機路徑相同。
 2. 本機 agent-playbook repo：先查已指定／登錄的位置，其次 `PROJECTS_ROOT` 下的 `agent-playbook`；未設定時才核對原生主目錄下 `projects/agent-playbook`。確認 repo 身分後，以 Git 讀取指定指南 commit 的檔案（例如 `git show`），不切分支、不直接採用工作樹草稿或其他版本，也不為查找而掃描整個磁碟。
-3. 沒有可用本機副本時，透過可用的網頁／GitHub 工具唯讀取得固定版本：`https://raw.githubusercontent.com/momonong/agent-playbook/8463b05ba165e97cb11e43ddc320a522937ffc68/`，接上下表的相對路徑；必要時改讀 GitHub 同一 commit 的 blob 頁面。這不要求安裝、clone 或修改環境，不得改用 main／latest 代替。
+3. 沒有可用本機副本時，透過可用的網頁／GitHub 工具唯讀取得固定版本：`https://raw.githubusercontent.com/momonong/agent-playbook/dc4f5d852ca7b8e5a550517bd7d011f417e688a5/`，接上下表的相對路徑；必要時改讀 GitHub 同一 commit 的 blob 頁面。這不要求安裝、clone 或修改環境，不得改用 main／latest 代替。
 
 只接受上述同一版本的指南；先取得相關章節全文，不能只憑搜尋摘要。讀過且版本未變就重用，不重複下載。快照或 repo 中其他版本的核心檔只供歷史核對，不取代本次已載入的核心。
 
 | 觸發條件 | 必須先讀的文件 |
 |---|---|
-| 接任 main／orchestrate、定義階段、建立或交接 task、跨對話授權、持續追蹤、task 委派 subagents | `guides/collaboration.md` 的相關章節 |
+| 接任 main／orchestrate、對話命名、定義階段、建立或交接 task、跨對話授權、持續追蹤、task 委派 subagents | `guides/collaboration.md` 的相關章節 |
 | 在已授權範圍內選擇新任務或 subagent 的模型／推理深度，或評估配置 | `guides/model-selection.md` |
 | 修改專案、安排工作目錄／分支、Python 依賴、驗證、整合、交付或清理 | `guides/engineering.md` 的相關章節 |
 | 接入本機模型、家用伺服器、HP／ASUS、momonong.me、Cloudflare Tunnel 或 Caddy | `guides/service-integration.md`，再讀其指定的專案契約 |

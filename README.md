@@ -15,7 +15,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | 文件 | 用途 |
 |---|---|
 | [instructions/codex.md](instructions/codex.md) | 可直接複製貼上的跨裝置核心指示 |
-| [guides/collaboration.md](guides/collaboration.md) | main／orchestrate／task、授權、規格、交接與追蹤 |
+| [guides/collaboration.md](guides/collaboration.md) | main／orchestrate／task、對話命名、授權、規格、交接與追蹤 |
 | [guides/model-selection.md](guides/model-selection.md) | 已授權新任務的模型、effort 與速度政策 |
 | [guides/engineering.md](guides/engineering.md) | 工程決策、路徑、Git、Python、驗證與清理 |
 | [guides/service-integration.md](guides/service-integration.md) | selfhost-models／selfhost-servers 的文件入口與跨專案限制 |
@@ -29,7 +29,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 - repo 保存來源；核心原文與按需指南分開。指南固定在核心首行指定的 commit，本機可有同版快照，否則唯讀存取固定 GitHub 版本。普通 git pull、切分支或改草稿不自動變更已貼上的政策。
 - `<codex-home>` 是實際 `CODEX_HOME`，未設定時為使用者主目錄的 `.codex`。每台電腦獨立解析，不能複製其他電腦的絕對路徑。
 
-實際命令、各平台路徑範例與可重複安裝流程見 [跨裝置安裝](docs/installation.md)。模型與路徑的最新決策見 [2026-10-02 更新](docs/update-2026-10-02.md)。
+實際命令、各平台路徑範例與可重複安裝流程見 [跨裝置安裝](docs/installation.md)。模型、路徑與授權決策見 [2026-10-02 更新](docs/update-2026-10-02.md)；角色命名見 [2026-10-03 更新](docs/update-2026-10-03.md)。
 
 ## 可選：本機安裝／更新
 

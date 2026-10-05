@@ -18,7 +18,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | [guides/collaboration.md](guides/collaboration.md) | main／orchestrate／task、對話命名、授權、規格、交接與追蹤 |
 | [guides/model-selection.md](guides/model-selection.md) | 已授權新任務的模型、effort 與速度政策 |
 | [guides/engineering.md](guides/engineering.md) | 工程決策、路徑、Git、Python、驗證與清理 |
-| [guides/service-integration.md](guides/service-integration.md) | selfhost-models／selfhost-servers 的文件入口與跨專案限制 |
+| [guides/service-integration.md](guides/service-integration.md) | 本機模型、國網訓練與家用伺服器的文件入口及跨專案限制 |
 | [docs/migration-2026-09-30.md](docs/migration-2026-09-30.md) | 原規則映射、已確認變更與驗證方式 |
 | [archive/original-2026-09-30.md](archive/original-2026-09-30.md) | 不變的歷史原文，僅供比對，不屬當前指示 |
 | [AGENTS.md](AGENTS.md) | 修改本 repo 時的維護規則，並非全域指示 |
@@ -29,7 +29,9 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 - repo 保存來源；核心原文與按需指南分開。指南固定在核心首行指定的 commit，本機可有同版快照，否則唯讀存取固定 GitHub 版本。普通 git pull、切分支或改草稿不自動變更已貼上的政策。
 - `<codex-home>` 是實際 `CODEX_HOME`，未設定時為使用者主目錄的 `.codex`。每台電腦獨立解析，不能複製其他電腦的絕對路徑。
 
-實際命令、各平台路徑範例與可重複安裝流程見 [跨裝置安裝](docs/installation.md)。模型、路徑與授權決策見 [2026-10-02 更新](docs/update-2026-10-02.md)；角色命名見 [2026-10-03 更新](docs/update-2026-10-03.md)；main 階段回報見 [2026-10-04 更新](docs/update-2026-10-04.md)。
+實際命令、各平台路徑範例與可重複安裝流程見 [跨裝置安裝](docs/installation.md)。模型、路徑與授權決策見 [2026-10-02 更新](docs/update-2026-10-02.md)；角色命名見 [2026-10-03 更新](docs/update-2026-10-03.md)；main 階段回報見 [2026-10-04 更新](docs/update-2026-10-04.md)；國網文件入口見 [2026-10-05 更新](docs/update-2026-10-05.md)。
+
+涉及國網訓練時，核心會引導代理先讀服務指南，再唯讀參考 `selfhost-models` 的 `docs/nchc-codex.md`。研究程式、job 與執行紀錄留在原研究 repo；參考文件的 commit 記在研究計畫中，不把操作細節或帳號資料複製進全域指示。這次更新仍只需整份替換 `instructions/codex.md`；詳細指南按需讀取，既有批准用途的 Custom rules 無需因本次文件入口更新而修改。
 
 ## 可選：本機安裝／更新
 

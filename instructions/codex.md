@@ -1,4 +1,4 @@
-<!-- agent-playbook guides-commit: 0537a1d421df43d13ec038c6c61a974947a34ba6 -->
+<!-- agent-playbook guides-commit: 72ba50184ae824d2428ac32a8324f4622e831163 -->
 # 合作核心指示
 
 使用繁體中文，先說結論，再提供必要理由與證據；可以直接討論架構、系統設計與技術取捨。
@@ -66,7 +66,7 @@
 
 1. 本機固定快照：先核對實際 Codex home（已確認的客戶端位置、其次 `CODEX_HOME`，未設定才用作業系統原生使用者主目錄下的 `.codex`），再讀其下 `agent-playbook/versions/` 中以指南完整 commit 命名的目錄。核對 `SOURCE_COMMIT` 相符；不假設 Windows 磁碟代號、macOS／Linux 使用者名稱或 WSL／遠端與本機路徑相同。
 2. 本機 agent-playbook repo：先查已指定／登錄的位置，其次 `PROJECTS_ROOT` 下的 `agent-playbook`；未設定時才核對原生主目錄下 `projects/agent-playbook`。確認 repo 身分後，以 Git 讀取指定指南 commit 的檔案（例如 `git show`），不切分支、不直接採用工作樹草稿或其他版本，也不為查找而掃描整個磁碟。
-3. 沒有可用本機副本時，透過可用的網頁／GitHub 工具唯讀取得固定版本：`https://raw.githubusercontent.com/momonong/agent-playbook/0537a1d421df43d13ec038c6c61a974947a34ba6/`，接上下表的相對路徑；必要時改讀 GitHub 同一 commit 的 blob 頁面。這不要求安裝、clone 或修改環境，不得改用 main／latest 代替。
+3. 沒有可用本機副本時，透過可用的網頁／GitHub 工具唯讀取得固定版本：`https://raw.githubusercontent.com/momonong/agent-playbook/72ba50184ae824d2428ac32a8324f4622e831163/`，接上下表的相對路徑；必要時改讀 GitHub 同一 commit 的 blob 頁面。這不要求安裝、clone 或修改環境，不得改用 main／latest 代替。
 
 只接受上述同一版本的指南；先取得相關章節全文，不能只憑搜尋摘要。讀過且版本未變就重用，不重複下載。快照或 repo 中其他版本的核心檔只供歷史核對，不取代本次已載入的核心。
 
@@ -75,6 +75,6 @@
 | 接任 main／orchestrate、對話命名、定義階段、建立或交接 task、跨對話授權、持續追蹤、task 委派 subagents | `guides/collaboration.md` 的相關章節 |
 | 在已授權範圍內選擇新任務或 subagent 的模型／推理深度，或評估配置 | `guides/model-selection.md` |
 | 修改專案、安排工作目錄／分支、Python 依賴、驗證、整合、交付或清理 | `guides/engineering.md` 的相關章節 |
-| 接入本機模型、家用伺服器、HP／ASUS、momonong.me、Cloudflare Tunnel 或 Caddy | `guides/service-integration.md`，再讀其指定的專案契約 |
+| 接入本機模型、家用伺服器、HP／ASUS、momonong.me、Cloudflare Tunnel 或 Caddy，或涉及國網／NCHC／Nano5 訓練、研究 smoke 與其 Slurm 工作準備 | `guides/service-integration.md`，再讀其指定的專案契約 |
 
 所有來源都不可讀或網路／工具受限時，明說缺少的指南與版本，只暫停依賴缺失規則的操作；不猜測權限、略過限制、假裝已讀或自行安裝。核心規則仍適用，簡單問答與無關工作可以繼續。

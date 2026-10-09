@@ -16,6 +16,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 |---|---|
 | [instructions/codex.md](instructions/codex.md) | 可直接複製貼上的跨裝置核心指示 |
 | [guides/collaboration.md](guides/collaboration.md) | main／orchestrate／task／learn、對話命名、授權、規格、交接與追蹤 |
+| [guides/external-execution.md](guides/external-execution.md) | agy 等外部 CLI task 的交接、授權、接續及驗收 |
 | [guides/learning.md](guides/learning.md) | 每個指定專案的學習主軸、概念路線、案例與學習交接 |
 | [guides/model-selection.md](guides/model-selection.md) | 已授權新任務的模型、effort 與速度政策 |
 | [guides/engineering.md](guides/engineering.md) | 工程決策、路徑、Git、Python、驗證與清理 |
@@ -30,13 +31,17 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 - repo 保存來源；核心原文與按需指南分開。指南固定在核心首行指定的 commit，本機可有同版快照，否則唯讀存取固定 GitHub 版本。普通 git pull、切分支或改草稿不自動變更已貼上的政策。
 - `<codex-home>` 是實際 `CODEX_HOME`，未設定時為使用者主目錄的 `.codex`。每台電腦獨立解析，不能複製其他電腦的絕對路徑。
 
-實際命令、各平台路徑範例與可重複安裝流程見 [跨裝置安裝](docs/installation.md)。模型、路徑與授權決策見 [2026-10-02 更新](docs/update-2026-10-02.md)；角色命名見 [2026-10-03 更新](docs/update-2026-10-03.md)；main 階段回報見 [2026-10-04 更新](docs/update-2026-10-04.md)；國網文件入口見 [2026-10-05 更新](docs/update-2026-10-05.md)；專案學習主軸與 learn 角色見 [2026-10-09 更新](docs/update-2026-10-09.md)。
+實際命令、各平台路徑範例與可重複安裝流程見 [跨裝置安裝](docs/installation.md)。模型、路徑與授權決策見 [2026-10-02 更新](docs/update-2026-10-02.md)；角色命名見 [2026-10-03 更新](docs/update-2026-10-03.md)；main 階段回報見 [2026-10-04 更新](docs/update-2026-10-04.md)；國網文件入口見 [2026-10-05 更新](docs/update-2026-10-05.md)；專案學習主軸與 learn 角色見 [2026-10-09 更新](docs/update-2026-10-09.md)；外部 CLI task 見 [2026-10-10 更新](docs/update-2026-10-10.md)。
 
 涉及國網訓練時，核心會引導代理先讀服務指南，再唯讀參考 `selfhost-models` 的 `docs/nchc-codex.md`。研究程式、job 與執行紀錄留在原研究 repo；參考文件的 commit 記在研究計畫中，不把操作細節或帳號資料複製進全域指示。這次更新仍只需整份替換 `instructions/codex.md`；詳細指南按需讀取，既有批准用途的 Custom rules 無需因本次文件入口更新而修改。
 
 ## 開發與學習並行
 
 採用此模式的個人專案各有一個指定 `learn：專案`，由使用者確認主軸、目標與範圍，再建立概念與先備知識路線。開發成果是教學案例，不按每次 commit 排課；main 仍負責決策、交付與驗收。共通方法見 [學習指南](guides/learning.md)，各專案的主軸、案例與進度留在該專案。規則更新不會自動建立對話、讀取所有專案或啟用排程。
+
+## 外部 CLI task
+
+main／orchestrate／task／learn 分工保留；在階段授權涵蓋供應商、資料與操作範圍時，task 可由 agy 等外部 CLI 承擔。簡單工作用短指令，多輪工作用 Markdown 與明確 session 接續；協調者核對成果，不另建只轉傳的 Codex task。規格、結果與證據留在原專案，具體流程見 [外部執行指南](guides/external-execution.md)。新增規則不自動啟用外部模型、修改批准設定或保證節省比例。
 
 ## 可選：本機安裝／更新
 

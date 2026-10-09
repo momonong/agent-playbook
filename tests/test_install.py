@@ -33,14 +33,15 @@ class InstallTests(unittest.TestCase):
         self.assertNotIn(b'{{PLAYBOOK_', core)
         self.assertIn(('https://raw.githubusercontent.com/momonong/agent-playbook/' + pinned + '/').encode(), core)
         committed = documents_at(repo, pinned)
-        for guide in ('collaboration', 'engineering', 'model-selection', 'service-integration', 'learning'):
+        for guide in ('collaboration', 'engineering', 'model-selection', 'service-integration', 'learning', 'external-execution'):
             name = f'guides/{guide}.md'
             self.assertEqual(committed[name], (repo / name).read_bytes())
         install(self.home, pinned, {'instructions/codex.md': core},
                 apply=True, expected='missing', guide_payload=committed)
         snapshot = self.home / 'agent-playbook' / 'versions' / pinned
-        self.assertEqual((snapshot / 'guides/learning.md').read_bytes(),
-                         (repo / 'guides/learning.md').read_bytes())
+        for guide in ('learning', 'external-execution'):
+            name = f'guides/{guide}.md'
+            self.assertEqual((snapshot / name).read_bytes(), (repo / name).read_bytes())
 
     def test_native_home_and_explicit_precedence(self):
         user = Path(self.temp.name)

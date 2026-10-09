@@ -15,7 +15,8 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | 文件 | 用途 |
 |---|---|
 | [instructions/codex.md](instructions/codex.md) | 可直接複製貼上的跨裝置核心指示 |
-| [guides/collaboration.md](guides/collaboration.md) | main／orchestrate／task、對話命名、授權、規格、交接與追蹤 |
+| [guides/collaboration.md](guides/collaboration.md) | main／orchestrate／task／learn、對話命名、授權、規格、交接與追蹤 |
+| [guides/learning.md](guides/learning.md) | 每個指定專案的學習主軸、概念路線、案例與學習交接 |
 | [guides/model-selection.md](guides/model-selection.md) | 已授權新任務的模型、effort 與速度政策 |
 | [guides/engineering.md](guides/engineering.md) | 工程決策、路徑、Git、Python、驗證與清理 |
 | [guides/service-integration.md](guides/service-integration.md) | 本機模型、國網訓練與家用伺服器的文件入口及跨專案限制 |
@@ -29,9 +30,13 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 - repo 保存來源；核心原文與按需指南分開。指南固定在核心首行指定的 commit，本機可有同版快照，否則唯讀存取固定 GitHub 版本。普通 git pull、切分支或改草稿不自動變更已貼上的政策。
 - `<codex-home>` 是實際 `CODEX_HOME`，未設定時為使用者主目錄的 `.codex`。每台電腦獨立解析，不能複製其他電腦的絕對路徑。
 
-實際命令、各平台路徑範例與可重複安裝流程見 [跨裝置安裝](docs/installation.md)。模型、路徑與授權決策見 [2026-10-02 更新](docs/update-2026-10-02.md)；角色命名見 [2026-10-03 更新](docs/update-2026-10-03.md)；main 階段回報見 [2026-10-04 更新](docs/update-2026-10-04.md)；國網文件入口見 [2026-10-05 更新](docs/update-2026-10-05.md)。
+實際命令、各平台路徑範例與可重複安裝流程見 [跨裝置安裝](docs/installation.md)。模型、路徑與授權決策見 [2026-10-02 更新](docs/update-2026-10-02.md)；角色命名見 [2026-10-03 更新](docs/update-2026-10-03.md)；main 階段回報見 [2026-10-04 更新](docs/update-2026-10-04.md)；國網文件入口見 [2026-10-05 更新](docs/update-2026-10-05.md)；專案學習主軸與 learn 角色見 [2026-10-09 更新](docs/update-2026-10-09.md)。
 
 涉及國網訓練時，核心會引導代理先讀服務指南，再唯讀參考 `selfhost-models` 的 `docs/nchc-codex.md`。研究程式、job 與執行紀錄留在原研究 repo；參考文件的 commit 記在研究計畫中，不把操作細節或帳號資料複製進全域指示。這次更新仍只需整份替換 `instructions/codex.md`；詳細指南按需讀取，既有批准用途的 Custom rules 無需因本次文件入口更新而修改。
+
+## 開發與學習並行
+
+採用此模式的個人專案各有一個指定 `learn：專案`，由使用者確認主軸、目標與範圍，再建立概念與先備知識路線。開發成果是教學案例，不按每次 commit 排課；main 仍負責決策、交付與驗收。共通方法見 [學習指南](guides/learning.md)，各專案的主軸、案例與進度留在該專案。規則更新不會自動建立對話、讀取所有專案或啟用排程。
 
 ## 可選：本機安裝／更新
 
@@ -41,7 +46,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 2. 核對 `<codex-home>/AGENTS.md` 與 `AGENTS.override.md`。若 override 存在，先確認用途；不可移除／覆寫它或假裝新 AGENTS.md 會優先生效。確認配置中無另外指定的指示來源需處理。
 3. 執行預覽並核對來源、目標與 `current_sha256`；套用時帶入該 hash（首次安裝使用 `missing`）。備份既有全域 AGENTS.md 到 `<codex-home>/backups/` 的新檔，記錄其 SHA-256。安裝前再次比對原檔，若期間有修改就停止覆寫並核對。
 4. 從指定核心 commit 取得 `instructions/codex.md` 原文，再從其 `guides-commit` 取得該版本全部 Markdown，建立 `<codex-home>/agent-playbook/versions/<指南完整 SHA>/`，保留相對結構與 `SOURCE_COMMIT`。指南版本可以早於核心版本；同名快照只核對，不改寫。
-5. 驗證核心沒有佔位符，四份指南屬於其指定版本；核心原樣安裝，沒有模板渲染或裝置路徑替換。
+5. 驗證核心沒有佔位符，核心引用的所有指南屬於其指定版本；核心原樣安裝，沒有模板渲染或裝置路徑替換。
 6. 將原始核心以暫存檔加原子替換寫入 `<codex-home>/AGENTS.md`，保留原有檔案權限。不改模型設定，不提高指示大小上限，不動其他專案或既有任務。
 7. 核對安裝檔與 repo 中核心原文逐位元組相同，快照與 Git 內容相同；報告來源 SHA、備份、安裝位置與限制。新開一個工作階段核對實際載入來源；不要宣稱既有對話會自動重新載入。
 

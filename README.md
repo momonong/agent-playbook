@@ -20,7 +20,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | [guides/learning.md](guides/learning.md) | 每個指定專案的學習主軸、概念路線、案例與學習交接 |
 | [guides/model-selection.md](guides/model-selection.md) | 已授權新任務的模型、effort 與速度政策 |
 | [guides/engineering.md](guides/engineering.md) | 工程決策、路徑、Git、Python、驗證與清理 |
-| [guides/service-integration.md](guides/service-integration.md) | 本機模型、國網訓練與家用伺服器的文件入口及跨專案限制 |
+| [guides/service-integration.md](guides/service-integration.md) | 本機模型、API Quota Broker、國網訓練與家用伺服器的入口及跨專案限制 |
 | [docs/migration-2026-09-30.md](docs/migration-2026-09-30.md) | 原規則映射、已確認變更與驗證方式 |
 | [archive/original-2026-09-30.md](archive/original-2026-09-30.md) | 不變的歷史原文，僅供比對，不屬當前指示 |
 | [AGENTS.md](AGENTS.md) | 修改本 repo 時的維護規則，並非全域指示 |
@@ -42,6 +42,10 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 ## 外部 CLI task
 
 main／orchestrate／task／learn 分工保留；在階段授權涵蓋供應商、資料與操作範圍時，task 可由 agy 等外部 CLI 承擔。簡單工作用短指令，多輪工作用 Markdown 與明確 session 接續；協調者核對成果，不另建只轉傳的 Codex task。規格、結果與證據留在原專案，具體流程見 [外部執行指南](guides/external-execution.md)。新增規則不自動啟用外部模型、修改批准設定或保證節省比例。
+
+## 共用 API 服務
+
+API 配額與供應商路由接入先讀 [服務指南](guides/service-integration.md#api-配額與供應商路由api-quota-broker)，再引用 Broker 已發布的接入契約。這是應用後端的共用 Gateway；文件更新不自動切換既有服務或 Codex 模型呼叫。版本與需求映射見 [2026-10-12 更新](docs/update-2026-10-12.md)。
 
 ## 可選：本機安裝／更新
 

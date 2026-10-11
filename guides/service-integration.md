@@ -13,6 +13,16 @@
 - 接入不代表可改共用模型服務；部署、重啟、切 backend、GPU 使用、網路／認證調整及對外開放須核對當次授權及其他工作的影響。不自行開 LAN／公網，也不假設跨容器可連。
 - 超出範圍依已指定 task → orchestrate → main 路徑決策；適用精簡路徑則 task → main。
 
+## API 配額與供應商路由：api-quota-broker
+
+- 自用／自架應用需要共用外部 AI API、配額管理或供應商路由時，先評估既有 `api-quota-broker` Gateway 與需求是否相符；不因入口存在就替換現有整合。它是應用後端的共用服務，不是 agy 等開發 task 執行者，也不自動代理 Codex 的模型請求。
+- 按 [工程指南](engineering.md) 定位已指定／登錄的 `api-quota-broker`，其次 `PROJECTS_ROOT`，未設定才核對原生主目錄下 `projects/api-quota-broker`。確認來源為 `momonong/api-quota-broker`，先讀 `README.md`、`docs/client-integration.md`；依契約再讀能力與維運文件，不套用參考 repo 的角色規則到接入專案。
+- 引用版本以接入計畫指定 commit 為準；未指定時核對本機 HEAD，從該 commit 讀完整文件並記錄 SHA、路徑與日期。無本機副本時，由 [GitHub 接入入口](https://github.com/momonong/api-quota-broker/blob/main/docs/client-integration.md) 解析所用 commit，再讀固定版本及必要引用。未提交草稿、聊天摘要及程式版本號不能冒充已發布文件版本；缺少必要全文時只暫停相依操作，不自行 clone。playbook 的 pin 不固定外部 repo；同一接入階段沿用已記錄版本，變更時核對差異。
+- Gateway 有自己的 JSON 契約，不是 OpenAI／Gemini SDK 換 base URL 即可使用。先核對能力、同步或 queue、結果保存及錯誤語義；目前為可信合作式客戶端，client token 不提供專案／使用者 ACL，不能當公開多租戶隔離。具體 API、範例與限制只在 Broker 契約維護。
+- endpoint、主機、credential 及部署狀態依契約與授權現場核對；localhost 按主機／容器解析，程式或文件存在不代表服務已部署或帳號可用。後端使用合法 Broker client credential，不將 provider key 或 admin token 當一般接入憑證；金鑰不進前端、Git 或日誌。
+- 持久化原 request key 與工作關聯；timeout／unknown 先查原工作，不換 key、endpoint、instance 或供應商重送，不自行開付費 fallback。區分執行成功、答案完整性與用量結算；配額及免費資格須核對現況，不把 catalog／usage 當即時官方餘額。
+- 原應用 task 負責 adapter、fixture、有限 live 驗收及 main 回報，先完成離線契約驗證，再依已授權資料／資源範圍呼叫服務。接入不授權修改 Broker、帳號／模型配置、worker、網路、部署或重啟；涉及共用主機另讀本指南的伺服器章節。Broker 維運與應用整合分別驗收，未完成的應用（含 OrderFlow）不因文件發布視為已接入。
+
 ## 國網訓練：selfhost-models
 
 涉及國網／NCHC／Nano5 訓練、研究 smoke 或其 Slurm 工作準備時，先讀研究 repo 自身的 `AGENTS.md`、README 與訓練入口，再按以下方式取得參考文件。一般本機訓練或其他 Slurm 叢集不自動套用 Nano5 規則。

@@ -61,3 +61,5 @@
 ## 2026-10-13 後續取代範圍
 
 [合作路徑與 High 決策](update-2026-10-13.md)取代以多 task 相依為 orchestrate 必要條件的規則，改依目標是否需要工程拆解、安排與持續整合判斷；Sol 6.1 新 main／orchestrate／task 預設 High，取代 main／orchestrate Medium 與 Sol task 小範圍 Medium 彈性。上方內容保留為歷史；單一主要協調者、事件交接、必要驗證、Astra 先 Medium、角色實作邊界與授權保護繼續適用。
+
+2026-10-13 [完成交接補充](update-2026-10-13.md#完成喚醒與回報補充)釐清派工前的喚醒機制、一次必要交接及 main 回報責任；取代將事件／wait／read 一概視為跨回合接續能力的表述，保留授權、拒絕保護與避免重複輪詢。

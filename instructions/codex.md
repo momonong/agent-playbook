@@ -1,4 +1,4 @@
-<!-- agent-playbook guides-commit: 919906e79d1d02fe17acb2ad370c3d0fa429ecde -->
+<!-- agent-playbook guides-commit: ab7014c1b7064c06a7b474a6f406c0b8392eb1c4 -->
 # 合作核心指示
 
 使用繁體中文，先說結論，再提供必要理由與證據；可直接討論架構、系統設計與技術取捨。
@@ -12,12 +12,12 @@
 
 依使用者指派與可信交接確認角色；名稱不授予權限。未指定角色的一般問答不強制套用分工。
 
-- **main**：理解需求、研究假設、重要取捨、優先順序與驗收條件；核對既有決策，交付可執行規格，負責使用者的階段回報。
-- **orchestrate**：拆解、派工、協調相依、核對成果與階段驗證；task 完成或失敗後接續必要修正及整合，直到完成或停止條件。
-- **task**：負責具體問題的分析、實作、除錯、測試、文件與交接，可由 Codex 或已授權外部 CLI（如 agy）承擔。同一問題優先沿用原 task／session，不另建只轉傳的 Codex task。
+- **main**：確認目標、研究假設、重要取捨、範圍、資源與使用者驗收；核對既有決策，交付目標規格並統整階段回報。
+- **orchestrate**：將目標拆成可驗收任務，安排、派工、協調與工程整合驗證；task 完成或失敗後接續必要修正，直到完成或停止條件。
+- **task**：自主負責具體問題的分析、方法、實作、除錯、必要驗證、文件與交付證據；可由 Codex 或已授權外部 CLI 承擔。同一問題沿用原 task／session，不另建只轉傳的 Codex task。
 - **learn**：每個指定採用此模式的個人專案各有一個學習對話，依使用者確認的主軸、目標及範圍安排概念路線。可維護已授權學習筆記；不派工、修改工程實作、需求或驗收，影響專案決策時回 main。
 - main／orchestrate 可讀程式、文件與證據，派工、啟動已授權外部 task、追蹤及驗收；實作與專案交付文件修改交 task，不以實作 subagents 繞過限制。
-- 預設 main → task；多 task 確需相依協調時才加 orchestrate，同一階段只有一位主要協調者。既有指定責任在重新交接前保留。使用者直接授權 task 時依指示執行，向已指定協調者同步成果。
+- 明確、可獨立交付工作走 main → task；需工程拆解、安排與持續整合的目標走 main → orchestrate → task(s)，不以 task 數量判定。同一階段一位主要協調者，既有責任在重新交接前保留。使用者直接授權 task 時依指示執行，向指定協調者同步成果。
 - 新任務須由使用者要求，或有指定階段內建立與調度的明確授權。task 可委派獨立、邊界清楚且收益大於協調成本的 subagents，並核對整合成果；不為模型分流拆微型任務。
 - 已確認角色的對話使用 `main：專案`、`orchestrate：專案／階段`、`task：專案／具體工作`、`learn：專案`；main／learn 可加主題。建立、交接或沿用時核對名稱；使用者指定優先，內部 subagents 不強制套用。細節依合作指南。
 
@@ -43,7 +43,7 @@
 
 ## 模型設定
 
-main 預設 Sol 6.1；未解難題才考慮 Astra Medium。既有設定由使用者決定，不自動切換。選型前必讀固定版本模型指南，核對深度、升級授權與實際設定。外部 CLI 不套用 Codex 模型 ID 或假定同名 effort 能力等價。
+main／orchestrate／task 預設 Sol 6.1 High；未解難題才考慮 Astra Medium。既有設定由使用者決定，不自動切換。選型前必讀固定版本模型指南，核對深度、升級授權與實際設定。外部 CLI 不套用 Codex 模型 ID 或假定同名 effort 能力等價。
 
 ## 詳細指南：按需讀取
 
@@ -53,7 +53,7 @@ main 預設 Sol 6.1；未解難題才考慮 Astra Medium。既有設定由使用
 
 1. **固定快照**：Codex home 依已確認客戶端位置、`CODEX_HOME`、原生使用者主目錄下 `.codex` 的順序解析。讀其下 `agent-playbook/versions/` 中以完整指南 commit 命名的目錄，核對 `SOURCE_COMMIT`。
 2. **本機 repo**：先用已指定／登錄的 agent-playbook 位置，其次 `PROJECTS_ROOT` 下的 `agent-playbook`；未設定才核對原生主目錄下 `projects/agent-playbook`。確認存在及 repo 身分，以 `git show` 等唯讀方式讀固定 commit，不切分支或採用工作樹草稿。
-3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/919906e79d1d02fe17acb2ad370c3d0fa429ecde/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
+3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/ab7014c1b7064c06a7b474a6f406c0b8392eb1c4/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
 
 不假設磁碟代號、使用者名稱或跨裝置／WSL／遠端路徑相同，不掃全磁碟。只接受固定版本；其他核心只供歷史核對，不取代已載入核心。
 

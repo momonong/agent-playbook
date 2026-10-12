@@ -6,9 +6,9 @@
 
 | 工作 | 模型 ID | Effort |
 |---|---|---|
-| 新 main：需求、研究與取捨 | `gpt-6.1-sol` | `medium` 預設；確需持續深度判斷時 `high` |
-| 新 orchestrate：必要的相依協調與整合 | `gpt-6.1-sol` | `medium` 預設；具體複雜判斷時 `high` |
-| 一般與複雜開發 task | `gpt-6.1-sol` | `high`；明確、小範圍、容易驗證時 `medium` |
+| 新 main：目標、研究、重要取捨與使用者驗收 | `gpt-6.1-sol` | `high` |
+| 新 orchestrate：工程拆解、安排與整合驗證 | `gpt-6.1-sol` | `high` |
+| 新 task：具體問題的分析、實作與交付 | `gpt-6.1-sol` | `high` |
 | Sol 無法解決且確需更深判斷的有界支援 | `gpt-6-astra` | `medium` |
 | 機械轉換、資料抽取與結構化整理 | `gpt-6-luna` | `high`；簡單且可可靠驗證時 `medium` |
 
@@ -27,7 +27,7 @@
 
 ## 深度、速度與升級
 
-- 依上表按工作選擇深度，不再以 High 作所有角色的共同預設。main／orchestrate 與 Astra 先用 Medium；一般工程 task 保留 Sol High。既有設定的切換仍需授權。
+- Sol 6.1 的新 main／orchestrate／task 預設 High；Astra 先用 Medium，其他模型依上表。learn 與既有對話保留已確認設定；不同配置或切換仍依使用者授權，不因本政策修改全域模型 config。
 - Extra High（`xhigh`）只有具體問題需要且當次授權允許才用；Max／Ultra 不作日常預設。不因額度剩餘自動提高，也不因單次消耗高就立即降低。
 - 先核對需求、資料、工具、環境與相依，再處理反覆漏約束、根因判斷不足與無效修正。工具故障、批准阻礙、缺資料與純等待，不能靠升級模型解決。
 - Effort 與速度分開。新任務工具可指定速度且無另行要求時使用 Standard；High 不代表 Fast。工具沒有速度欄位時不宣稱已設定或驗證 Standard。
@@ -51,7 +51,7 @@
 
 ## 2026-10-02 模型更新
 
-使用者要求因應 Codex 新模型更新配置並合併、推送。原本使用 `gpt-6-sol` 的新建任務改為 `gpt-6.1-sol`；當時 Astra／Luna 的角色及 High／Medium 原則保留；現行設定以上方 2026-10-12 政策為準。本文的 Sol 簡稱皆指表中 GPT-6.1 Sol，不使用會自行漂移的 latest 別名。
+使用者要求因應 Codex 新模型更新配置並合併、推送。原本使用 `gpt-6-sol` 的新建任務改為 `gpt-6.1-sol`；當時 Astra／Luna 的角色及 High／Medium 原則保留；現行設定以上方 2026-10-13 政策為準。本文的 Sol 簡稱皆指表中 GPT-6.1 Sol，不使用會自行漂移的 latest 別名。
 
 [官方模型頁](https://developers.openai.com/api/docs/models/gpt-6.1-sol)將 GPT-6.1 Sol 定位為兼顧複雜工作能力與成本的選擇，支援本政策使用的 Medium／High；[模型家族指南](https://developers.openai.com/api/docs/guides/latest-model)仍區分 Astra、Sol、Luna。這支持延續原分工，但不是此配置已在使用者專案勝過其他配置的實驗證據。
 
@@ -60,3 +60,7 @@
 ## 2026-10-12 用量與配置調整
 
 使用者確認 main 先用 Sol 6.1，解決不了的具體問題才考慮 Astra 支援；Astra 先用 Medium。這是合作預設，不宣稱已修改現有對話、全域模型設定或保證節省比例。決策及交付狀態見 [本次更新](../docs/update-2026-10-12-lean.md)。
+
+## 2026-10-13 High 預設
+
+使用者確認 Sol 6.1 的 main／orchestrate／task 預設 High，取代 2026-10-12 的 main／orchestrate Medium 及 Sol task 的小範圍 Medium 彈性；Astra 先 Medium、其他模型與 learn 既有設定保留。這是新配置政策，不切換現有聊天或修改全域模型 config。合作路徑與需求映射見 [本次更新](../docs/update-2026-10-13.md)。

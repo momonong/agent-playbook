@@ -37,7 +37,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 
 ## 精簡協作
 
-預設 main → task，確有多任務相依才加一位主要 orchestrate。無新事件或獨立工作時結束當輪，不讓各層輪詢同一任務；階段結果依約定回 main。main 先用 Sol 6.1，Astra 僅支援具體未解難題且先用 Medium。沿用必要驗證，不為每項修改新增測試或流程；完整規則與決策見 [2026-10-12 協作精簡](docs/update-2026-10-12-lean.md)。
+明確、可獨立交付工作走 main → task；需工程拆解、執行安排與持續整合的目標走 main → orchestrate → task(s)，最後只有一個 task 也合理。main 確認目標、重要取捨與使用者驗收，orchestrate 拆解、派工及核對工程整合，task 自主完成方法、實作與證據。每階段一位主要協調者，沿用既有責任與充分證據；無新事件或獨立工作時結束當輪，不循環輪詢或逐則轉傳。Sol 6.1 的新 main／orchestrate／task 預設 High，Astra 有界支援先 Medium；既有聊天與模型 config 保留。完整規則見 [合作指南](guides/collaboration.md)及[模型指南](guides/model-selection.md)，決策見 [2026-10-13 更新](docs/update-2026-10-13.md)。
 
 ## 開發與學習並行
 

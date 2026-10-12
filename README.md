@@ -39,6 +39,8 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 
 明確、可獨立交付工作走 main → task；需工程拆解、執行安排與持續整合的目標走 main → orchestrate → task(s)，最後只有一個 task 也合理。main 確認目標、重要取捨與使用者驗收，orchestrate 拆解、派工及核對工程整合，task 自主完成方法、實作與證據。每階段一位主要協調者，沿用既有責任與充分證據；無新事件或獨立工作時結束當輪，不循環輪詢或逐則轉傳。Sol 6.1 的新 main／orchestrate／task 預設 High，Astra 有界支援先 Medium；既有聊天與模型 config 保留。完整規則見 [合作指南](guides/collaboration.md)及[模型指南](guides/model-selection.md)，決策見 [2026-10-13 更新](docs/update-2026-10-13.md)。
 
+派工前確認完成事件或合法一次傳訊的喚醒路徑；單次 wait／read 不代表跨回合訂閱。只留 task final 或傳訊成功不等於 main 已回報；main 核對證據並向使用者統整後，才完成使用者交付，人工接受另行核對。完整流程見 [合作指南](guides/collaboration.md#派工與完成交接)。
+
 ## 開發與學習並行
 
 採用此模式的個人專案各有一個指定 `learn：專案`，由使用者確認主軸、目標與範圍，再建立概念與先備知識路線。開發成果是教學案例，不按每次 commit 排課；main 仍負責決策、交付與驗收。共通方法見 [學習指南](guides/learning.md)，各專案的主軸、案例與進度留在該專案。規則更新不會自動建立對話、讀取所有專案或啟用排程。

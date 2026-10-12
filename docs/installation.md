@@ -53,7 +53,7 @@ uv run --locked python scripts/install.py --commit $playbookCommit --expect-curr
 - 安裝使用排他鎖防止本安裝程式互撞；替換前再次核對原檔與指示來源，使用同目錄暫存檔及 `os.replace`。不要同時用其他編輯器修改 AGENTS.md；一般檔案 API 無法保證對不合作外部寫入者的絕對原子比較交換。
 - 同版本、同目錄、同內容重跑不產生新備份；若快照損壞仍停止。備份與舊快照保留，清理另行授權。
 - 不跟隨受管理檔案、快照或備份目錄的 symlink／junction；Windows 對受管理位置的 reparse point 一律停止，Python 3.11／3.12 都適用。不處理作業系統 ACL 遷移：POSIX 保留 mode，Windows 使用目的地目錄繼承權限；有特殊 ACL 時先人工核對。
-- 安裝程式核對落地內容，沒有修改 Codex 指示容量限制。核心約 11 KB，實際有效上限及其他專案指示仍由使用中的客戶端決定。
+- 安裝程式核對落地內容，沒有修改 Codex 指示容量限制。核心約 9 KB，實際有效上限及其他專案指示仍由使用中的客戶端決定。
 - 成功後新開工作階段，確認讀到指南 SHA、定位順序及模型指南。安裝輸出的 `source_commit` 是核心來源，`guides_commit` 是指南來源，`installed_sha256` 可用來核對複製內容；核心首行不是自身提交版本。既有對話不保證自動重載；既有模型／effort 設定不會因此切換。
 
 ## 回復與測試

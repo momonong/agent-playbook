@@ -1,4 +1,4 @@
-<!-- agent-playbook guides-commit: cc0adccd65cebc90141107875302c4f3845ab4eb -->
+<!-- agent-playbook guides-commit: 8aafbc70f7d72108d26b32a66c7133d6b16a04a1 -->
 # 合作核心指示
 
 使用繁體中文，先說結論，再提供必要理由與證據；可直接討論架構、系統設計與技術取捨。
@@ -43,7 +43,7 @@
 
 ## 模型設定
 
-main／orchestrate／task 預設 Sol 6.1 High；未解難題才考慮 Astra Medium。既有設定由使用者決定，不自動切換。選型前必讀固定版本模型指南，核對深度、升級授權與實際設定。外部 CLI 不套用 Codex 模型 ID 或假定同名 effort 能力等價。
+main 預設 Astra Medium；orchestrate／task 預設 Sol 6.1 High。不全面升級；具體瓶頸依授權評估。既有設定由使用者決定，不自動切換。選型前必讀固定版本模型指南，核對深度、升級授權與實際設定。外部 CLI 不套用 Codex 模型 ID 或假定同名 effort 能力等價。
 
 ## 詳細指南：按需讀取
 
@@ -53,7 +53,7 @@ main／orchestrate／task 預設 Sol 6.1 High；未解難題才考慮 Astra Medi
 
 1. **固定快照**：Codex home 依已確認客戶端位置、`CODEX_HOME`、原生使用者主目錄下 `.codex` 的順序解析。讀其下 `agent-playbook/versions/` 中以完整指南 commit 命名的目錄，核對 `SOURCE_COMMIT`。
 2. **本機 repo**：先用已指定／登錄的 agent-playbook 位置，其次 `PROJECTS_ROOT` 下的 `agent-playbook`；未設定才核對原生主目錄下 `projects/agent-playbook`。確認存在及 repo 身分，以 `git show` 等唯讀方式讀固定 commit，不切分支或採用工作樹草稿。
-3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/cc0adccd65cebc90141107875302c4f3845ab4eb/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
+3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/8aafbc70f7d72108d26b32a66c7133d6b16a04a1/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
 
 不假設磁碟代號、使用者名稱或跨裝置／WSL／遠端路徑相同，不掃全磁碟。只接受固定版本；其他核心只供歷史核對，不取代已載入核心。
 

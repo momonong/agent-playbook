@@ -37,7 +37,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 
 ## 精簡協作
 
-明確、可獨立交付工作走 main → task；需工程拆解、執行安排與持續整合的目標走 main → orchestrate → task(s)，最後只有一個 task 也合理。main 確認目標、重要取捨與使用者驗收，orchestrate 拆解、派工及核對工程整合，task 自主完成方法、實作與證據。每階段一位主要協調者，沿用既有責任與充分證據；無新事件或獨立工作時結束當輪，不循環輪詢或逐則轉傳。Sol 6.1 的新 main／orchestrate／task 預設 High，Astra 有界支援先 Medium；既有聊天與模型 config 保留。完整規則見 [合作指南](guides/collaboration.md)及[模型指南](guides/model-selection.md)，決策見 [2026-10-13 更新](docs/update-2026-10-13.md)。
+明確、可獨立交付工作走 main → task；需工程拆解、執行安排與持續整合的目標走 main → orchestrate → task(s)，最後只有一個 task 也合理。main 確認目標、重要取捨與使用者驗收，orchestrate 拆解、派工及核對工程整合，task 自主完成方法、實作與證據。每階段一位主要協調者，沿用既有責任與充分證據；無新事件或獨立工作時結束當輪，不循環輪詢或逐則轉傳。新 main 預設 Astra Medium，orchestrate／task 預設 Sol 6.1 High；具體瓶頸才依授權評估有界升級，不全面提高深度。其他模型、learn 與既有聊天／config 保留。完整規則見 [合作指南](guides/collaboration.md)及[模型指南](guides/model-selection.md)，決策見 [2026-10-13 更新](docs/update-2026-10-13.md)。
 
 派工前確認完成事件或合法一次傳訊的喚醒路徑；單次 wait／read 不代表跨回合訂閱。只留 task final 或傳訊成功不等於 main 已回報；main 核對證據並向使用者統整後，才完成使用者交付，人工接受另行核對。完整流程見 [合作指南](guides/collaboration.md#派工與完成交接)。
 

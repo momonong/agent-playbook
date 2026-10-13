@@ -6,16 +6,16 @@
 
 | 工作 | 模型 ID | Effort |
 |---|---|---|
-| 新 main：目標、研究、重要取捨與使用者驗收 | `gpt-6.1-sol` | `high` |
+| 新 main：目標、研究、重要取捨與使用者驗收 | `gpt-6-astra` | `medium` |
 | 新 orchestrate：工程拆解、安排與整合驗證 | `gpt-6.1-sol` | `high` |
 | 新 task：具體問題的分析、實作與交付 | `gpt-6.1-sol` | `high` |
 | Sol 無法解決且確需更深判斷的有界支援 | `gpt-6-astra` | `medium` |
 | 機械轉換、資料抽取與結構化整理 | `gpt-6-luna` | `high`；簡單且可可靠驗證時 `medium` |
 
-- main 先用 Sol 6.1，不按角色名稱自動使用 Astra。Sol 可以完成複雜工程與規劃；不因等待、工具故障、缺資料或 task 數量升級模型。
-- 需要 Astra 時，先列出尚未解決的具體問題、已有證據與嘗試、預期交付及停止條件。沿用合適且已授權的支援對話；需要加開時須有建立任務授權，不因此重建整套分工或複製完整專案歷史。
-- Astra 一律先用 Medium，High 須有具體理由及使用者明確授權。支援只處理指定難題，結束後將結論與證據交回原執行者，不接手例行協調、等待或重做完整任務。
-- 新建時明確使用 `gpt-6.1-sol`，不沿用 `gpt-6-sol` 或漂移的 latest。既有對話不自動切換；恢復前核對實際設定，舊配置不符本政策時說明差異，取得切換授權後再調整。不用送工作訊息的方式偷偷切換或喚醒暫停任務。
+- main 預設 Astra Medium；orchestrate／task 預設 Sol 6.1 High。模型跟隨已確認角色與本表，不因等待、工具故障、缺資料或 task 數量升級，也不為混合配置增加常駐第四角色或自動委派。
+- Sol 遇具體未解的根因／方法判斷瓶頸時，先列出問題、已有證據與嘗試、預期交付及停止條件，再依當次授權評估有界 xhigh 或 Astra 支援。沿用合適且已授權的執行者；需要加開時仍須建立任務授權，不重建整套分工或複製完整歷史。
+- Astra main 以 Medium 為起點；重大研究／架構取捨或反覆漏掉關鍵需求時可評估 High，仍須具體理由與使用者明確授權。有界 Astra 支援也先用 Medium，只處理指定難題，結束後交回原執行者，不接手例行協調、等待或重做完整任務。
+- 已授權新建 main 明確指定 `gpt-6-astra`／`medium`，orchestrate／task 預設指定 `gpt-6.1-sol`／`high`，其他模型依上表；不用舊 Sol ID 或漂移的 latest。既有對話、learn 與專利討論保留已確認設定；恢復前核對實際設定，差異僅說明，取得切換授權後才調整。不以工作訊息偷偷切換或喚醒暫停任務。
 - 依不確定性、錯誤代價、可驗證性與總交付成本選擇。可用腳本／既有工具處理的機械步驟，不為模型分流增加新 task；不同模型的同名 effort 不代表能力或費用等價。
 
 ## 外部 task 的設定
@@ -27,7 +27,7 @@
 
 ## 深度、速度與升級
 
-- Sol 6.1 的新 main／orchestrate／task 預設 High；Astra 先用 Medium，其他模型依上表。learn 與既有對話保留已確認設定；不同配置或切換仍依使用者授權，不因本政策修改全域模型 config。
+- Astra main Medium、Sol 6.1 orchestrate／task High 是起點；不全面提高 Sol 至 xhigh，其他模型依上表。「以後需要再修改」不代表自動升級授權，不因本政策修改全域模型 config。
 - Extra High（`xhigh`）只有具體問題需要且當次授權允許才用；Max／Ultra 不作日常預設。不因額度剩餘自動提高，也不因單次消耗高就立即降低。
 - 先核對需求、資料、工具、環境與相依，再處理反覆漏約束、根因判斷不足與無效修正。工具故障、批准阻礙、缺資料與純等待，不能靠升級模型解決。
 - Effort 與速度分開。新任務工具可指定速度且無另行要求時使用 Standard；High 不代表 Fast。工具沒有速度欄位時不宣稱已設定或驗證 Standard。
@@ -61,6 +61,12 @@
 
 使用者確認 main 先用 Sol 6.1，解決不了的具體問題才考慮 Astra 支援；Astra 先用 Medium。這是合作預設，不宣稱已修改現有對話、全域模型設定或保證節省比例。決策及交付狀態見 [本次更新](../docs/update-2026-10-12-lean.md)。
 
-## 2026-10-13 High 預設
+## 2026-10-13 High 預設（main 部分已取代）
 
 使用者確認 Sol 6.1 的 main／orchestrate／task 預設 High，取代 2026-10-12 的 main／orchestrate Medium 及 Sol task 的小範圍 Medium 彈性；Astra 先 Medium、其他模型與 learn 既有設定保留。這是新配置政策，不切換現有聊天或修改全域模型 config。合作路徑與需求映射見 [本次更新](../docs/update-2026-10-13.md)。
+
+## 2026-10-13 混合模型政策
+
+使用者採用 Astra Medium main、Sol 6.1 High orchestrate／task，取代上節全 Sol High 的 main 部分與 2026-10-12「main 先 Sol、Astra 僅支援」政策；其他模型與既有設定保留。完整決策映射見 [本次更新](../docs/update-2026-10-13.md#混合模型政策補充)。
+
+2026-10-13 核對 [官方選型指南](https://developers.openai.com/api/docs/guides/model-selection)：Astra 適合模糊問題、深入分析與重要成果；Sol 6.1 適合需兼顧時間及成本的複雜工作。這提供工作性質的選型背景，main／orchestrate／task 配置是使用者採用的角色政策，未做專案控制比較，不宣稱官方認證或最佳配置。

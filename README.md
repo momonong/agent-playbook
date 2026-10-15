@@ -15,7 +15,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | 文件 | 用途 |
 |---|---|
 | [instructions/codex.md](instructions/codex.md) | 可直接複製貼上的跨裝置核心指示 |
-| [guides/collaboration.md](guides/collaboration.md) | main／orchestrate／task／learn、對話命名、授權、規格、交接與追蹤 |
+| [guides/collaboration.md](guides/collaboration.md) | 單一目標對話、討論與執行、subagents、授權與必要交接 |
 | [guides/external-execution.md](guides/external-execution.md) | agy 等外部 CLI task 的交接、授權、接續及驗收 |
 | [guides/learning.md](guides/learning.md) | 每個指定專案的學習主軸、概念路線、案例與學習交接 |
 | [guides/model-selection.md](guides/model-selection.md) | 已授權新任務的模型、effort 與速度政策 |
@@ -31,23 +31,27 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 - repo 保存來源；核心原文與按需指南分開。指南固定在核心首行指定的 commit，本機可有同版快照，否則唯讀存取固定 GitHub 版本。普通 git pull、切分支或改草稿不自動變更已貼上的政策。
 - `<codex-home>` 是實際 `CODEX_HOME`，未設定時為使用者主目錄的 `.codex`。每台電腦獨立解析，不能複製其他電腦的絕對路徑。
 
-實際命令、各平台路徑範例與可重複安裝流程見 [跨裝置安裝](docs/installation.md)。模型、路徑與授權決策見 [2026-10-02 更新](docs/update-2026-10-02.md)；角色命名見 [2026-10-03 更新](docs/update-2026-10-03.md)；main 階段回報見 [2026-10-04 更新](docs/update-2026-10-04.md)；國網文件入口見 [2026-10-05 更新](docs/update-2026-10-05.md)；專案學習主軸與 learn 角色見 [2026-10-09 更新](docs/update-2026-10-09.md)；外部 CLI task 見 [2026-10-10 更新](docs/update-2026-10-10.md)。
+以下日期文件為歷史決策，已取代部分以現行核心及釘選指南為準。實際命令、各平台路徑範例與可重複安裝流程見 [跨裝置安裝](docs/installation.md)。模型、路徑與授權決策見 [2026-10-02 更新](docs/update-2026-10-02.md)；角色命名見 [2026-10-03 更新](docs/update-2026-10-03.md)；main 階段回報見 [2026-10-04 更新](docs/update-2026-10-04.md)；國網文件入口見 [2026-10-05 更新](docs/update-2026-10-05.md)；專案學習主軸與 learn 角色見 [2026-10-09 更新](docs/update-2026-10-09.md)；外部 CLI task 見 [2026-10-10 更新](docs/update-2026-10-10.md)。
 
 涉及國網訓練時，核心會引導代理先讀服務指南，再唯讀參考 `selfhost-models` 的 `docs/nchc-codex.md`。研究程式、job 與執行紀錄留在原研究 repo；參考文件的 commit 記在研究計畫中，不把操作細節或帳號資料複製進全域指示。這次更新仍只需整份替換 `instructions/codex.md`；詳細指南按需讀取，既有批准用途的 Custom rules 無需因本次文件入口更新而修改。
 
-## 精簡協作
+## 一個對話、一個目標
 
-明確、可獨立交付工作走 main → task；需工程拆解、執行安排與持續整合的目標走 main → orchestrate → task(s)，最後只有一個 task 也合理。main 確認目標、重要取捨與使用者驗收，orchestrate 拆解、派工及核對工程整合，task 自主完成方法、實作與證據。每階段一位主要協調者，沿用既有責任與充分證據；無新事件或獨立工作時結束當輪，不循環輪詢或逐則轉傳。新 main 預設 Astra Medium，orchestrate／task 預設 Sol 6.1 High；具體瓶頸才依授權評估有界升級，不全面提高深度。其他模型、learn 與既有聊天／config 保留。完整規則見 [合作指南](guides/collaboration.md)及[模型指南](guides/model-selection.md)，決策見 [2026-10-13 更新](docs/update-2026-10-13.md)。
+同一完整目標在同一對話討論、規劃、實作、驗證並直接回報；不再強制 main／orchestrate／task 分層，主對話可實作。先討論不等於授權修改；確認執行後在原對話繼續。目標已清楚且已授權時直接做，不要求形式上的討論或另開實作對話。
 
-派工前確認完成事件或合法一次傳訊的喚醒路徑；單次 wait／read 不代表跨回合訂閱。結束前核對當前有效目標、未完驗收與接收者，實際交接並核對工具結果，已送不重送。main 的本次目標 final 才是已向使用者回報的證據，人工接受另行核對。完整流程見 [合作指南](guides/collaboration.md#派工與完成交接)，修正映射見 [2026-10-16 更新](docs/update-2026-10-16.md)。
+新的獨立目標或上下文已妨礙工作時才考慮新對話；同一問題的修正沿用原處。需要時用有界 subagents 協助，由原對話核對整合，使用者不用巡查助手或搬運成果。長期跨對話協作僅在具體需要且獲授權時使用。
+
+模型依目標選擇，主對話保留使用者設定；需要選型時以 Astra Medium、Sol 6.1 High 等既有配置為起點，不綁角色、不強制換模型、不全面升級。舊對話與 learn／專利用途保留，不因更新刪除、封存、改名、傳訊或恢復工作。
+
+完整規則見 [合作指南](guides/collaboration.md)及[模型指南](guides/model-selection.md)，授權與取代範圍見 [2026-10-16 單一目標對話改版](docs/update-2026-10-16-goal-conversations.md)。這項政策取代先前固定分層及集中 main 回報規則；歷史更新紀錄只作追溯。
 
 ## 開發與學習並行
 
-採用此模式的個人專案各有一個指定 `learn：專案`，由使用者確認主軸、目標與範圍，再建立概念與先備知識路線。開發成果是教學案例，不按每次 commit 排課；main 仍負責決策、交付與驗收。共通方法見 [學習指南](guides/learning.md)，各專案的主軸、案例與進度留在該專案。規則更新不會自動建立對話、讀取所有專案或啟用排程。
+採用此模式的個人專案各有一個指定 `learn：專案`，由使用者確認主軸、目標與範圍，再建立概念與先備知識路線。開發成果是教學案例，不按每次 commit 排課；原工程目標對話仍負責決策確認、交付與驗收。共通方法見 [學習指南](guides/learning.md)，各專案的主軸、案例與進度留在該專案。規則更新不會自動建立對話、讀取所有專案或啟用排程。
 
 ## 外部 CLI task
 
-main／orchestrate／task／learn 分工保留；在階段授權涵蓋供應商、資料與操作範圍時，task 可由 agy 等外部 CLI 承擔。簡單工作用短指令，多輪工作用 Markdown 與明確 session 接續；協調者核對成果，不另建只轉傳的 Codex task。規格、結果與證據留在原專案，具體流程見 [外部執行指南](guides/external-execution.md)。新增規則不自動啟用外部模型、修改批准設定或保證節省比例。
+原目標對話可直接實作；在階段授權涵蓋供應商、資料與操作範圍時，也可由 agy 等外部 CLI 承擔具體工作。簡單工作用短指令，多輪工作用 Markdown 與明確 session 接續；協調者核對成果，不另建只轉傳的 Codex task。規格、結果與證據留在原專案，具體流程見 [外部執行指南](guides/external-execution.md)。新增規則不自動啟用外部模型、修改批准設定或保證節省比例。
 
 ## 共用 API 服務
 

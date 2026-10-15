@@ -1,5 +1,7 @@
 # 2026-10-12 協作與用量精簡
 
+> 歷史決策紀錄；角色與回報政策已由[單一目標對話改版](update-2026-10-16-goal-conversations.md)取代。下列指南連結固定於改版前版本供追溯。
+
 ## 決策與範圍
 
 使用者在本 repo 維護對話要求：main 先用 Sol 6.1，真正無法解決的問題才考慮 Astra；Astra 先用 Medium；先暫停 OrderFlow／API Quota Broker，再重整核心與指南，排除不必要程序，沒有特別需要不新增測試。
@@ -10,11 +12,11 @@
 
 | 已確認調整 | 主要來源 | 核心摘要 |
 |---|---|---|
-| 預設 main → task，必要才加 orchestrate；一階段一位主要協調者 | [合作指南](../guides/collaboration.md#角色與路徑) | 角色與合作 |
-| 無新事件／可執行工作就結束當輪，一次完成／阻礙交接，不循環輪詢與轉傳 | [合作指南](../guides/collaboration.md#追蹤停止與回報節奏) | 驗證與回報 |
-| main／例行協調先 Sol 6.1 Medium，一般工程 Sol 6.1 High；有界 Astra 支援先 Medium | [模型指南](../guides/model-selection.md) | 模型設定 |
-| 沿用必要既有檢查，只有具體風險或驗收需求才補測試，不預設新框架／審查層 | [工程指南](../guides/engineering.md#驗證與整合) | 驗證與回報 |
-| 外部 task 採同樣精簡路徑及風險相稱驗證 | [外部執行指南](../guides/external-execution.md) | 沿用原入口 |
+| 預設 main → task，必要才加 orchestrate；一階段一位主要協調者 | [合作指南](https://github.com/momonong/agent-playbook/blob/2736eb3ee4b3e4fbb375e31bb7c6952066538971/guides/collaboration.md#角色與路徑) | 角色與合作 |
+| 無新事件／可執行工作就結束當輪，一次完成／阻礙交接，不循環輪詢與轉傳 | [合作指南](https://github.com/momonong/agent-playbook/blob/2736eb3ee4b3e4fbb375e31bb7c6952066538971/guides/collaboration.md#追蹤停止與回報節奏) | 驗證與回報 |
+| main／例行協調先 Sol 6.1 Medium，一般工程 Sol 6.1 High；有界 Astra 支援先 Medium | [模型指南](https://github.com/momonong/agent-playbook/blob/2736eb3ee4b3e4fbb375e31bb7c6952066538971/guides/model-selection.md) | 模型設定 |
+| 沿用必要既有檢查，只有具體風險或驗收需求才補測試，不預設新框架／審查層 | [工程指南](https://github.com/momonong/agent-playbook/blob/2736eb3ee4b3e4fbb375e31bb7c6952066538971/guides/engineering.md#驗證與整合) | 驗證與回報 |
+| 外部 task 採同樣精簡路徑及風險相稱驗證 | [外部執行指南](https://github.com/momonong/agent-playbook/blob/2736eb3ee4b3e4fbb375e31bb7c6952066538971/guides/external-execution.md) | 沿用原入口 |
 
 保留 main／orchestrate 不實作、task 完整交付、learn 可選、可信人類授權、正式批准、資料保護及 Git／部署範圍。沒有因省用量取消必要驗證或降低已約定驗收；既有 orchestrate 的責任須明確重新交接，不能自行繞過。
 

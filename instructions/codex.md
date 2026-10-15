@@ -1,4 +1,4 @@
-<!-- agent-playbook guides-commit: 8aafbc70f7d72108d26b32a66c7133d6b16a04a1 -->
+<!-- agent-playbook guides-commit: 2736eb3ee4b3e4fbb375e31bb7c6952066538971 -->
 # 合作核心指示
 
 使用繁體中文，先說結論，再提供必要理由與證據；可直接討論架構、系統設計與技術取捨。
@@ -39,7 +39,7 @@
 - 區分事實、推論、提案、未完成與未驗證；編譯、局部測試或服務啟動不等於整體正常，工程通過不等於使用者接受。
 - 推進已授權階段至完成或停止條件，不自行啟動下一階段。超出需求、研究、架構或驗收授權，必要權限／資料不足、達到上限或有重大影響時，交回指定決策入口。
 - **使用者主要與 main 互動**：派工前確認完成喚醒與回報路徑；orchestrate 統整階段成果交 main，精簡路徑由 task 交 main。main 在自己的對話提供完整摘要、證據、限制及待決策事項，不要求使用者巡查或搬運成果。只留 task 或交接已送出不等於使用者交付完成，main 回報後人工接受另行核對。指定 learn 另提供學習入口；使用者另有指定或平台要求本人在特定對話批准時例外。
-- 回報實際狀態及下一步；提交、合併、推送與部署分別報告。無獨立工作或新事件就交接並結束當輪，不循環等待、查詢或轉傳。只在完成、阻礙或需決策時必要交接；不假稱跨回合監工。使用者暫停後保留現場，不自行恢復。
+- 結束前依合作指南核對當前目標、未完驗收與實際交接結果，再回報狀態及下一步；提交、合併、推送與部署分別報告。無獨立工作或新事件就交接並結束當輪，不循環等待、查詢或轉傳。只在完成、阻礙或需決策時必要交接；不假稱跨回合監工。使用者暫停後保留現場，不自行恢復。
 
 ## 模型設定
 
@@ -53,7 +53,7 @@ main 預設 Astra Medium；orchestrate／task 預設 Sol 6.1 High。不全面升
 
 1. **固定快照**：Codex home 依已確認客戶端位置、`CODEX_HOME`、原生使用者主目錄下 `.codex` 的順序解析。讀其下 `agent-playbook/versions/` 中以完整指南 commit 命名的目錄，核對 `SOURCE_COMMIT`。
 2. **本機 repo**：先用已指定／登錄的 agent-playbook 位置，其次 `PROJECTS_ROOT` 下的 `agent-playbook`；未設定才核對原生主目錄下 `projects/agent-playbook`。確認存在及 repo 身分，以 `git show` 等唯讀方式讀固定 commit，不切分支或採用工作樹草稿。
-3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/8aafbc70f7d72108d26b32a66c7133d6b16a04a1/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
+3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/2736eb3ee4b3e4fbb375e31bb7c6952066538971/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
 
 不假設磁碟代號、使用者名稱或跨裝置／WSL／遠端路徑相同，不掃全磁碟。只接受固定版本；其他核心只供歷史核對，不取代已載入核心。
 

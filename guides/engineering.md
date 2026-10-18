@@ -41,8 +41,9 @@
 
 - 遵循專案規範；未定義時用聚焦可驗收問題的短期工作分支，不混無關修改、不增加不必要的 develop／release 長期分支。
 - 功能、修正與衝突解決在工作分支進行，避免直接於 main 開發；已有符合範圍的分支優先沿用。
-- 預設 `<type>/<short-description>`，type 為 feat、fix、refactor、perf、docs、test、build、ci、chore、revert、integrate；簡短具體英文小寫與連字號，避免 temp／misc／final、姓名、空白及底線。
-- 有既有 issue 可加編號，不虛構。功能的測試與文件留在同分支，不按檔案種類拆分。
+- 新分支按主要工作目的命名為 `<type>/<short-description>`；本項使用者偏好取代工具一般 `codex/` 預設，不使用 `codex/feat/...` 等外層包裝。當次指定或專案明確規範仍優先；合適的既有分支沿用，不因本規則擅自改名。
+- type 為 feat、fix、refactor、perf、docs、test、build、ci、chore、revert、integrate；例如獨立文件政策更新用 `docs/astra-sol-workflow`。描述使用簡短具體英文小寫與連字號，避免 temp／misc／final、姓名、空白及底線。
+- 有既有 issue 可加編號，不虛構。以功能為主就用 `feat/`，附帶測試與文件留在同分支；不因含文件而拆出 `docs/` 分支，也不按檔案種類拆分。
 - 建分支前確認目錄、狀態、起點與合併目標；需對齊遠端先 fetch，不盲目 pull。名稱存在時查用途及 worktree，不強制重設、覆寫或直接沿用。
 - 相依工作可從指定前置 ref 建立，記錄相依和合併順序，避免夾帶無關提交。
 - 未有專案規範時，共用或被依賴分支優先 merge；rebase 僅用於確認未共用、未被依賴的私人分支。改寫已推送歷史與 force push 需明確授權；必要且已授權時核對遠端後用 --force-with-lease。

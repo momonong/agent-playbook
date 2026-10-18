@@ -8,7 +8,9 @@
 
 Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變數或任何佔位符，也不必先安裝腳本或 clone repo**。如果只是貼到一般聊天，僅適用該對話，不等於更新全域個人指示。
 
-代理在需要指南時，依序讀取本機固定快照、本機 repo 的固定 commit，或 GitHub 同一固定版本。沒有本機副本時，需要可用的網路／網頁工具；離線使用可選擇下方安裝方式。文件引用是代理需要主動讀取的規則，不是 Codex 自動匯入功能。
+核心保留首次行動所需規則與必讀路由。代理執行命中的工作前，讀適用指南章節全文，再沿指南讀必要專案契約與文件；多類工作各讀相應章節，摘要或看到連結不算已讀。同版已讀章節可重用，普通問答不按關鍵詞全讀。
+
+指南依序定位本機固定快照、本機 repo 的固定 commit，或 GitHub 同一固定版本；缺少必要文件時回報，不猜測規則。沒有本機副本時需要網路／網頁工具；離線可選下方安裝方式。這是代理須主動執行的讀取規則，不是 Codex 自動匯入功能，也不保證模型每次都會遵守。
 
 ## 文件入口
 
@@ -18,10 +20,11 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | [guides/collaboration.md](guides/collaboration.md) | 單一目標對話、討論與執行、subagents、授權與必要交接 |
 | [guides/external-execution.md](guides/external-execution.md) | agy 等外部 CLI task 的交接、授權、接續及驗收 |
 | [guides/learning.md](guides/learning.md) | 每個指定專案的學習主軸、概念路線、案例與學習交接 |
-| [guides/model-selection.md](guides/model-selection.md) | 已授權新任務的模型、effort 與速度政策 |
+| [guides/model-selection.md](guides/model-selection.md) | Astra 討論／Sol 6.1 實作分工、effort 與速度政策 |
 | [guides/engineering.md](guides/engineering.md) | 工程決策、路徑、Git、Python、驗證與清理 |
 | [guides/service-integration.md](guides/service-integration.md) | 本機模型、API Quota Broker、國網訓練與家用伺服器的入口及跨專案限制 |
 | [docs/migration-2026-09-30.md](docs/migration-2026-09-30.md) | 原規則映射、已確認變更與驗證方式 |
+| [docs/update-2026-10-18-model-and-branch-policy.md](docs/update-2026-10-18-model-and-branch-policy.md) | 模型分工、分支分類、短核心與按需必讀的決策及發布界線 |
 | [archive/original-2026-09-30.md](archive/original-2026-09-30.md) | 不變的歷史原文，僅供比對，不屬當前指示 |
 | [AGENTS.md](AGENTS.md) | 修改本 repo 時的維護規則，並非全域指示 |
 
@@ -41,9 +44,11 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 
 對話按專案分類，名稱只寫核心目標；學習、專利與歷史保留必要用途標記，完整命名規則見[合作指南](guides/collaboration.md#目標命名與接續)。
 
-模型依目標選擇，主對話保留使用者設定；需要選型時以 Astra Medium、Sol 6.1 High 等既有配置為起點，不綁角色、不強制換模型、不全面升級。舊對話與 learn／專利用途保留，不因更新刪除、封存、改名、傳訊或恢復工作。
+Astra 主導需求、目標、重要取捨與成果核對，Sol 6.1 承接已確認範圍的實作、除錯與測試；承接方式與深度設定留在模型指南。舊對話、既有設定與 learn／專利用途保留，不批次換模型、刪除、封存、改名、傳訊或恢復工作。
 
 完整規則見 [合作指南](guides/collaboration.md)及[模型指南](guides/model-selection.md)，授權與取代範圍見 [2026-10-16 單一目標對話改版](docs/update-2026-10-16-goal-conversations.md)。這項政策取代先前固定分層及集中 main 回報規則；歷史更新紀錄只作追溯。
+
+模型分工、分支入口與短核心／按需必讀的後續決策見 [2026-10-18 更新](docs/update-2026-10-18-model-and-branch-policy.md)；指南提交、核心重新釘選與固定版本安裝依下方流程核對。
 
 ## 開發與學習並行
 
@@ -71,7 +76,7 @@ API 配額與供應商路由接入先讀 [服務指南](guides/service-integrati
 
 ## 版本與驗證
 
-- 使用工作分支、可追溯 commit 與需要時的 PR 管理。角色與行為變更記錄原決策、取代範圍及仍保留的限制；小型文件調整不另開 task。
+- 新工作分支依主要目的用 `feat/`、`fix/`、`docs/` 等分類，取代工具一般 `codex/` 預設，不加 `codex/` 外層；沿用合適既有分支，不擅自改名。完整分類及專案規範優先原則見[工程指南](guides/engineering.md#git-分支與提交)。使用可追溯 commit 與需要時的 PR 管理；行為變更記錄決策、取代範圍與保留限制，小型文件調整不另開 task。
 - 本次原文基準為 commit `8193e2c0cddbedd9a80412b761309422aed61fa6`。目前政策以核心及其釘選版本的 guides 為準；Git 提交提供版本識別，不建立平行的版本編號系統。
 - 檢查 `git diff --check`、所有本地 Markdown 連結／指南路徑、UTF-8、無待替換佔位符、原文 SHA-256、需求映射及 staged 敏感資訊。安裝另核對快照與核心原樣複製一致性。
 - 核心維持精簡；不要為了縮短而移除硬限制，也不為短文件建立測試框架。安裝程式以標準函式庫 unittest 驗證，命令為 `uv run --locked python -m unittest discover -s tests -v`；CI 在 Linux／macOS／Windows 跑同組測試。未實際通過的 runner 不能列為已驗證平台。

@@ -1,4 +1,4 @@
-<!-- agent-playbook guides-commit: a4ca8147a0103693ec0abe8246a5ecfd07dab2b4 -->
+<!-- agent-playbook guides-commit: 3d2464f9d48215b8f6e5c0f7b2e23894bc230a5e -->
 # 合作核心指示
 
 使用繁體中文，先說結論，再提供必要理由與證據；可直接討論架構、系統設計與技術取捨。
@@ -24,6 +24,7 @@
 - 合併、推送、發布、部署、服務與網路變更、刪分支及移除 worktree 依當次明確授權；已授權者檢查後直接做，任務完成不自動授權上述動作。
 - 保留使用者與其他任務的資料、服務及未提交工作，不覆寫、回復或提交無關變更。修改或整合前核對目錄、HEAD／分支、Git 狀態、受影響任務、程序與共用資源。
 - 操作專案先讀適用 AGENTS.md 與相關文件。沿用已確認位置，按實際 OS、shell、主機／容器解析路徑，不搬移或複製專案猜環境。循序工作沿用既有目錄；並行修改、不可干擾工作或使用者要求時才新增 worktree。共用服務及資源不受 worktree 隔離，接入不等於授權部署或重啟。
+- 新分支依主要目的用 `feat/`、`fix/`、`docs/` 等分類，不加 `codex/` 前綴；建分支前讀工程指南。
 - 憑證、API key、token、SSH 私鑰、密碼與認證密碼 hash 不寫入原始碼、Git、指示詞、聊天或日誌；只記錄必要位置與安全取得方式。
 - 平台、工具、沙箱及正式批准機制照常適用，不代替使用者批准。需批准時用實際可用的正式介面，說明要求來源、動作及最少步驟。拒絕時說明理由，不換工具、對話或資料路徑完成同一被拒操作；繼續不受影響工作。
 
@@ -38,17 +39,17 @@
 
 ## 模型設定
 
-模型依目標選擇，不綁定角色或強制 Astra → Sol 交接。主對話與既有模型／深度保留使用者設定；需要選型時依固定模型指南評估 Astra Medium、Sol 6.1 High 等既有起點，不全面升級、不自行切換。外部 CLI 不套用 Codex 模型 ID 或假定同名 effort 能力等價。
+Astra 主導需求、目標、重要取捨與成果核對；Sol 6.1 承接已確認範圍的實作、除錯與測試。保留既有模型／深度，未授權不切換；完整分工與設定限制見模型指南。
 
 ## 詳細指南：按需讀取
 
-本核心可跨裝置原樣複製。首行 `guides-commit` 固定指南版本，與核心版本分開。觸發下表工作前讀相關章節全文；同版已讀內容重用。普通問答、確認目標與討論轉執行依核心即可，不因提到相關詞就載入指南。
+本核心可跨裝置原樣複製。首行 `guides-commit` 固定指南版本，與核心版本分開。執行下表命中的工作前，先讀適用章節全文，再依指南讀必要專案契約與文件；涉及多類工作就各讀相應章節，摘要或看到連結不算已讀。同版已讀章節可重用；普通問答、確認目標與討論轉執行依核心，不因提到關鍵詞就全讀指南。
 
 指南依序定位，路徑在實際環境解析，不要求使用者改文字：
 
 1. **固定快照**：Codex home 依已確認客戶端位置、`CODEX_HOME`、原生使用者主目錄下 `.codex` 的順序解析。讀其下 `agent-playbook/versions/` 中以完整指南 commit 命名的目錄，核對 `SOURCE_COMMIT`。
 2. **本機 repo**：先用已指定／登錄的 agent-playbook 位置，其次 `PROJECTS_ROOT` 下的 `agent-playbook`；未設定才核對原生主目錄下 `projects/agent-playbook`。確認存在及 repo 身分，以 `git show` 等唯讀方式讀固定 commit，不切分支或採用工作樹草稿。
-3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/a4ca8147a0103693ec0abe8246a5ecfd07dab2b4/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
+3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/3d2464f9d48215b8f6e5c0f7b2e23894bc230a5e/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
 
 不假設磁碟代號、使用者名稱或跨裝置／WSL／遠端路徑相同，不掃全磁碟。只接受固定版本；其他核心只供歷史核對，不取代已載入核心。
 
@@ -57,8 +58,8 @@
 | 新建／整理對話、跨對話交接／授權、委派 subagents 或安排長時間工作 | `guides/collaboration.md` 相關章節 |
 | 外部 CLI task 選型、派工、交接、接續與驗收 | `guides/external-execution.md`；合作及模型規則依相應觸發條件讀取 |
 | 確認學習主軸、建立／接任 learn、教學、學習紀錄或開發學習交接 | `guides/learning.md`；跨對話另讀合作指南 |
-| 評估或選擇新任務／subagent 的模型、推理深度與速度 | `guides/model-selection.md` |
-| 修改專案、定位專案／安排目錄與分支、依賴、驗證、整合、交付或清理 | `guides/engineering.md` 相關章節 |
-| API 配額／供應商路由／api-quota-broker、本機模型、家用伺服器、HP／ASUS、momonong.me、Cloudflare Tunnel／Caddy，或國網／NCHC／Nano5 訓練、研究 smoke／Slurm 工作 | `guides/service-integration.md`，再讀指定專案契約 |
+| 安排模型分工，或選擇／調整模型、推理深度與速度 | `guides/model-selection.md` |
+| 修改或定位專案、安排目錄、建立分支、依賴、驗證、整合、交付或清理 | `guides/engineering.md` 相關章節 |
+| 查核／接入／變更 API 配額與供應商路由（api-quota-broker）、本機模型、家用伺服器（HP／ASUS、momonong.me、Cloudflare Tunnel／Caddy），或安排國網／NCHC／Nano5 訓練、研究 smoke／Slurm 工作 | `guides/service-integration.md`，再讀指定專案契約 |
 
 指南不可讀時，說明缺少的文件與版本，只暫停依賴缺失規則的操作；不猜測權限、略過限制或假裝已讀。核心仍適用，無關工作可繼續。

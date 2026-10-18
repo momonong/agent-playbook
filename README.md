@@ -20,11 +20,12 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | [guides/collaboration.md](guides/collaboration.md) | 單一目標對話、討論與執行、subagents、授權與必要交接 |
 | [guides/external-execution.md](guides/external-execution.md) | agy 等外部 CLI task 的交接、授權、接續及驗收 |
 | [guides/learning.md](guides/learning.md) | 每個指定專案的學習主軸、概念路線、案例與學習交接 |
-| [guides/model-selection.md](guides/model-selection.md) | Astra 討論／Sol 6.1 實作分工、effort 與速度政策 |
+| [guides/model-selection.md](guides/model-selection.md) | Astra Ultra 目標責任、Sol 6.1 Ultra 實作分工與設定界線 |
 | [guides/engineering.md](guides/engineering.md) | 工程決策、路徑、Git、Python、驗證與清理 |
 | [guides/service-integration.md](guides/service-integration.md) | 本機模型、API Quota Broker、國網訓練與家用伺服器的入口及跨專案限制 |
 | [docs/migration-2026-09-30.md](docs/migration-2026-09-30.md) | 原規則映射、已確認變更與驗證方式 |
 | [docs/update-2026-10-18-model-and-branch-policy.md](docs/update-2026-10-18-model-and-branch-policy.md) | 模型分工、分支分類、短核心與按需必讀的決策及發布界線 |
+| [docs/update-2026-10-18-astra-ultra-ownership.md](docs/update-2026-10-18-astra-ultra-ownership.md) | 後續 Ultra 預設、Astra 全程負責與 Sol subagent 承接決策 |
 | [archive/original-2026-09-30.md](archive/original-2026-09-30.md) | 不變的歷史原文，僅供比對，不屬當前指示 |
 | [AGENTS.md](AGENTS.md) | 修改本 repo 時的維護規則，並非全域指示 |
 
@@ -38,17 +39,17 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 
 ## 一個對話、一個目標
 
-同一完整目標在同一對話討論、規劃、實作、驗證並直接回報；不再強制 main／orchestrate／task 分層，主對話可實作。先討論不等於授權修改；確認執行後在原對話繼續。目標已清楚且已授權時直接做，不要求形式上的討論或另開實作對話。
+同一完整目標在原對話持續承接討論、規劃、實作、驗證並直接回報；不強制 main／orchestrate／task 分層，實作分工依模型指南。先討論不等於授權修改；目標已確認且已授權時在原對話推進，不要求另開實作對話。
 
 新的獨立目標或上下文已妨礙工作時才考慮新對話；同一問題的修正沿用原處。需要時用有界 subagents 協助，由原對話核對整合，使用者不用巡查助手或搬運成果。長期跨對話協作僅在具體需要且獲授權時使用。
 
-對話按專案分類，名稱只寫核心目標；學習、專利與歷史保留必要用途標記，完整命名規則見[合作指南](guides/collaboration.md#目標命名與接續)。
+對話按專案分類，名稱只寫核心目標，不強制 main／dev 前綴；學習、專利與歷史保留必要用途標記，完整命名規則見[合作指南](guides/collaboration.md#目標命名與接續)。
 
-Astra 主導需求、目標、重要取捨與成果核對，Sol 6.1 承接已確認範圍的實作、除錯與測試；承接方式與深度設定留在模型指南。舊對話、既有設定與 learn／專利用途保留，不批次換模型、刪除、封存、改名、傳訊或恢復工作。
+Astra Ultra 負責討論、決策、推進與最後核對，已確認且已授權的實作預設交 Sol 6.1 Ultra subagent；工具操作與設定界線見模型指南。舊對話、既有設定與 learn／專利用途保留，不批次換模型、刪除、封存、改名、傳訊或恢復工作。
 
 完整規則見 [合作指南](guides/collaboration.md)及[模型指南](guides/model-selection.md)，授權與取代範圍見 [2026-10-16 單一目標對話改版](docs/update-2026-10-16-goal-conversations.md)。這項政策取代先前固定分層及集中 main 回報規則；歷史更新紀錄只作追溯。
 
-模型分工、分支入口與短核心／按需必讀的後續決策見 [2026-10-18 更新](docs/update-2026-10-18-model-and-branch-policy.md)；指南提交、核心重新釘選與固定版本安裝依下方流程核對。
+分支入口與短核心／按需必讀見 [2026-10-18 首輪決策](docs/update-2026-10-18-model-and-branch-policy.md)，後續模型與承接方式以 [Astra Ultra 目標責任決策](docs/update-2026-10-18-astra-ultra-ownership.md)取代；指南提交、核心重新釘選與固定版本安裝依下方流程核對。
 
 ## 開發與學習並行
 
@@ -56,7 +57,7 @@ Astra 主導需求、目標、重要取捨與成果核對，Sol 6.1 承接已確
 
 ## 外部 CLI task
 
-原目標對話可直接實作；在階段授權涵蓋供應商、資料與操作範圍時，也可由 agy 等外部 CLI 承擔具體工作。簡單工作用短指令，多輪工作用 Markdown 與明確 session 接續；協調者核對成果，不另建只轉傳的 Codex task。規格、結果與證據留在原專案，具體流程見 [外部執行指南](guides/external-execution.md)。新增規則不自動啟用外部模型、修改批准設定或保證節省比例。
+指定 agy 等外部 CLI 為執行方式前，須有涵蓋供應商、資料、操作與資源的階段授權；未指定時依模型指南的預設承接。簡單工作用短指令，多輪工作用 Markdown 與明確 session 接續；原對話跟進並核對成果，不另建只轉傳的 Codex task。規格、結果與證據留在原專案，具體流程見 [外部執行指南](guides/external-execution.md)。新增規則不自動啟用外部模型、修改批准設定或保證節省比例。
 
 ## 共用 API 服務
 

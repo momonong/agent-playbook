@@ -39,6 +39,8 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 
 安裝命令見[跨裝置安裝](docs/installation.md)；歷史決策由[遷移記錄](docs/migration-2026-09-30.md)追溯，已取代內容不作現行指令。服務與國網只按相關指南取得來源契約，不把操作細節複製進全域指示。
 
+引用 `selfhost-servers` 時，依[伺服器文件定位規則](guides/service-integration.md#家用伺服器selfhost-servers)核對來源、版本及同版文件；登錄目錄或工作樹名稱不代表最新，不為讀文件改動既有工作。
+
 ## 一個對話、一個目標
 
 同一完整目標在原對話持續承接討論、規劃、實作、驗證並直接回報；不強制 main／orchestrate／task 分層，實作分工依模型指南。先討論不等於授權修改；目標已確認且已授權時在原對話推進，不要求另開實作對話。

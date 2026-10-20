@@ -48,12 +48,12 @@
 
 ## 家用伺服器：selfhost-servers
 
-涉及家用伺服器、HP／ASUS、momonong.me、Cloudflare Tunnel 或 Caddy 時，先定位 `<projects-root>/selfhost-servers`（已指定／登錄位置優先），依序讀：
+涉及家用伺服器、HP／ASUS、momonong.me、Cloudflare Tunnel 或 Caddy 時，依[工程路徑規則](engineering.md#路徑與執行環境)定位 `selfhost-servers`；已指定／登錄位置優先。先核對來源為 `momonong/selfhost-servers`、HEAD／分支與 Git 狀態，必要時用 `git worktree list`。位置不等於文件版本；工作樹乾淨或名為 `main` 也不證明文件最新。
 
-1. `AGENTS.md` 與 `README.md`。
-2. 依任務讀 `docs/infrastructure.md`、`docs/operations.md`、`config/Caddyfile`。
-
-- 文件缺漏時核對已知資料並標待確認，不假設文件或部署存在。此 repo 是主機清單、SSH、資源、網路拓樸、服務設定及操作流程的共同來源；其他專案引用，不各自維護副本。
+- 任務已指定固定契約／commit 時沿用；未指定時，向可信遠端核對預設分支及最新已合併的完整 SHA，不將本機追蹤 ref 當成最新證據。在當次權限內可讀遠端 ref、取得必要 Git 物件；缺少網路、物件或必要全文時，標明最後可查證版本與缺項，不宣稱最新，只暫停相依操作。
+- 記錄所選完整 SHA、來源與查閱日期，同一階段固定使用；從該 SHA 先讀完整 `AGENTS.md`、`README.md`，再依任務讀 `docs/infrastructure.md`、`docs/operations.md`、`config/Caddyfile` 及相關日期化紀錄，相對引用也按同版解析。優先用 `git show`，不必切工作樹；確需另一工作樹時，只用 Git 列出的既有可用同 repo 工作樹讀同一 SHA，不自建副本或按資料夾名稱／時間挑選。無本機副本時，可用 GitHub 唯讀工具確認 repo／ref 後讀固定 SHA 的完整文件及引用。
+- 這是外部共用文件查閱規則，不接管該 repo 的其他任務。不為讀文件切分支、pull、stash、reset、clean，或覆寫、合併、提交未提交草稿、移除 worktree；必要時另讀當前 checkout 的本地規則以辨識限制，不以草稿冒充已發布來源。
+- 此 repo 是主機清單、SSH、資源、網路拓樸、服務設定及操作流程的共同來源；其他專案引用，不各自維護副本。最新文件不代表已部署；服務及共用設定變更仍須依下方現場核對與當次授權，不假設文件或部署存在。
 - 2026-09-30 原始規則確認的入口約束是 Cloudflare Tunnel → HP Caddy → 應用；momonong.me 根路徑保留首頁。這是需保留／查證的架構約束，不是本指南對現場部署的健康證明。
 
 ## 責任與協調

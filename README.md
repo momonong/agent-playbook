@@ -22,11 +22,12 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | [guides/learning.md](guides/learning.md) | 每個指定專案的學習主軸、概念路線、案例與學習交接 |
 | [guides/model-selection.md](guides/model-selection.md) | Astra Ultra 目標責任、Sol 6.1 Ultra 實作分工與設定界線 |
 | [guides/engineering.md](guides/engineering.md) | 工程決策、路徑、Git、Python、驗證、HTML 可讀交付與清理 |
-| [guides/service-integration.md](guides/service-integration.md) | 本機模型、API Quota Broker、國網訓練與家用伺服器的入口及跨專案限制 |
+| [guides/service-integration.md](guides/service-integration.md) | 本機模型、API Quota Broker、私人 HTML 預覽、國網訓練與家用伺服器的入口及跨專案限制 |
 | [docs/migration-2026-09-30.md](docs/migration-2026-09-30.md) | 原規則映射、已確認變更與驗證方式 |
 | [docs/update-2026-10-18-model-and-branch-policy.md](docs/update-2026-10-18-model-and-branch-policy.md) | 模型分工、分支分類、短核心與按需必讀的決策及發布界線 |
 | [docs/update-2026-10-18-astra-ultra-ownership.md](docs/update-2026-10-18-astra-ultra-ownership.md) | 後續 Ultra 預設、Astra 全程負責與 Sol subagent 承接決策 |
 | [docs/update-2026-10-20-html-delivery.md](docs/update-2026-10-20-html-delivery.md) | 使用者當前裝置的 HTML 渲染交付與待啟用預覽服務決策 |
+| [docs/update-2026-10-20-html-preview-integration.md](docs/update-2026-10-20-html-preview-integration.md) | 工程驗證通過的私人 HTML 預覽之固定契約、授權範圍及正式接入 |
 | [archive/original-2026-09-30.md](archive/original-2026-09-30.md) | 不變的歷史原文，僅供比對，不屬當前指示 |
 | [AGENTS.md](AGENTS.md) | 修改本 repo 時的維護規則，並非全域指示 |
 
@@ -63,6 +64,10 @@ Astra Ultra 負責討論、決策、推進與最後核對，已確認且已授�
 ## 共用 API 服務
 
 API 配額與供應商路由接入先讀 [服務指南](guides/service-integration.md#api-配額與供應商路由api-quota-broker)，再引用 Broker 已發布的接入契約。這是應用後端的共用 Gateway；文件更新不自動切換既有服務或 Codex 模型呼叫。版本與需求映射見 [2026-10-12 更新](docs/update-2026-10-12.md)。
+
+## 私人 HTML 交付
+
+本次 HTML 產生與私人預覽交付已獲授權，且既有通道已配置可用時，依[工程交付流程](guides/engineering.md#html-交付)與[私人預覽入口](guides/service-integration.md#私人-html-預覽html-preview)，上傳指定單份成品、取得 HTTPS 網址與期限、核對瀏覽器，再由原對話附連結及原稿。日常操作沿用既有權限，不逐次要求部署或 sudo；不擴張為掃描或上傳歷史文件。服務接入以固定契約為準，啟用依據及未完人工驗收見[本次整合紀錄](docs/update-2026-10-20-html-preview-integration.md)。不修改上游 HTML skill 或模型設定。
 
 ## 可選：本機安裝／更新
 

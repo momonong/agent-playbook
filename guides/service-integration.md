@@ -23,6 +23,15 @@
 - 持久化原 request key 與工作關聯；timeout／unknown 先查原工作，不換 key、endpoint、instance 或供應商重送，不自行開付費 fallback。區分執行成功、答案完整性與用量結算；配額及免費資格須核對現況，不把 catalog／usage 當即時官方餘額。
 - 原應用目標對話負責 adapter、fixture、有限 live 驗收及直接回報使用者，先完成離線契約驗證，再依已授權資料／資源範圍呼叫服務。接入不授權修改 Broker、帳號／模型配置、worker、網路、部署或重啟；涉及共用主機另讀本指南的伺服器章節。Broker 維運與應用整合分別驗收，未完成的應用（含 OrderFlow）不因文件發布視為已接入。
 
+## 私人 HTML 預覽：html-preview
+
+- 只處理本次已獲授權產生並作私人預覽交付的一個明確 HTML 成品；不掃描 repo、歷史文件或聊天，不批次上傳其他私人資料。原授權已涵蓋本次標準交付，且既有客戶端與通道已配置可用時直接完成，不逐份重問；普通生成 HTML 的要求不等於永久或無範圍的上傳授權。
+- 先讀[固定接入契約](https://github.com/momonong/html-preview/blob/13d83daac04b7a47a6c2ed1046242f89d51373f9/docs/client-integration.md)全文；本次正式引用來源為 `momonong/html-preview` commit `13d83daac04b7a47a6c2ed1046242f89d51373f9`。有已指定／登錄的本機 repo 時，可用 `git show` 讀同一 SHA 的 `docs/client-integration.md`，不採工作樹草稿或 main 取代；缺少必要契約或執行端客戶端不相容時回報，不自行 clone、安裝或切換來源。後續更新契約須核對差異並記錄所用版本；playbook 的 `guides-commit` 不固定外部 repo。
+- 正式入口為 `https://momonong.me/html-preview`，日常上傳／operation 查詢使用既有 HTTPS 客戶端及私人設定，不需要 SSH、重新部署、改 Caddy 或 sudo。credential 依契約從私人設定檔安全讀取，不進參數、URL、前端、指示詞、聊天或日誌；uploader token 只可上傳及查原 operation，瀏覽器預覽／下載另用獨立密碼，不以 uploader 權限讀取或刪除內容。共用主機或部署變更仍依下方伺服器章節及當次授權。
+- 保留本機原稿與 operation 收據；未知結果先查原 operation，只在契約明確確認未知 key 時用同一 key 重試。不能刪收據、改 UUID、換入口或掃檔重傳來規避未知結果；額外新文件不冒充重試。容量或上傳失敗時保留原稿及收據，回報實際狀態，不刪其他未到期文件騰額。
+- 初始期限為成功上傳後七天；使用者按提前到期按鈕後為 `min(current_expiry, server_now + 300s)`，重按不延長。到期讀取立即拒絕、服務端持久化計時及清理只移除線上副本，不刪本機原稿，不依賴 Codex Goal 或排程。限制與錯誤語義由服務契約維護，不在本指南複製命令或部署設定。
+- 先取得網址與到期時間，再按[工程指南](engineering.md#html-交付)核對瀏覽器渲染及必要互動，交付連結、期限與原稿位置；上傳成功不等於使用者裝置可達或人工接受。獨立 HTML 受 opaque sandbox 與 CSP 限制，不為外部資源、儲存或其他相容性放寬隔離；同源其他 app 的安全性仍須信任，Cookie Path 不是同源 XSS 邊界。完整限制與當次部署證據依固定契約的同版本 README／安全文件核對，歷史驗收不取代新版本或裝置的實測。
+
 ## 國網訓練：selfhost-models
 
 涉及國網／NCHC／Nano5 訓練、研究 smoke 或其 Slurm 工作準備時，先讀研究 repo 自身的 `AGENTS.md`、README 與訓練入口，再按以下方式取得參考文件。一般本機訓練或其他 Slurm 叢集不自動套用 Nano5 規則。

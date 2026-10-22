@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from scripts.install import digest, documents_at, guide_commit, install, payload_at, resolve_home
+from scripts.install import digest, documents_at, guide_commit, install, install_environment, payload_at, resolve_home
 
 SHA = 'a' * 40
 
@@ -44,7 +44,7 @@ class InstallTests(unittest.TestCase):
             self.assertEqual((snapshot / name).read_bytes(), (repo / name).read_bytes())
 
     def test_native_home_and_explicit_precedence(self):
-        user = Path(self.temp.name)
+        user = Path(self.temp.name).resolve()
         explicit = user / '指定 空間'
         env = user / 'env'
         self.assertEqual(resolve_home(environ={}, home=user), (user / '.codex').resolve())
@@ -58,6 +58,16 @@ class InstallTests(unittest.TestCase):
         if os.name != 'nt':
             with self.assertRaises(ValueError):
                 resolve_home(r'C:\Users\Someone\.codex')
+
+    @unittest.skipIf(os.name == 'nt', 'Unprivileged symlink creation is platform-dependent')
+    def test_codex_home_symlink_is_not_resolved_away_before_protection(self):
+        outside = Path(self.temp.name) / 'outside'
+        outside.mkdir()
+        linked = Path(self.temp.name) / 'linked-home'
+        linked.symlink_to(outside, target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, 'symlinks'):
+            resolve_home(str(linked))
+        self.assertEqual(list(outside.iterdir()), [])
 
     def test_preview_does_not_write(self):
         report = install(self.home, SHA, self.data)
@@ -128,6 +138,14 @@ class InstallTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.apply(digest(current))
         self.assertEqual(target.read_bytes(), current)
+
+    def test_check_does_not_claim_complete_when_guide_snapshot_missing(self):
+        self.home.mkdir(parents=True)
+        (self.home / "AGENTS.md").write_bytes(self.data["instructions/codex.md"])
+        report = install_environment(self.home, SHA, self.data)
+        self.assertEqual(report["snapshot_status"], "missing")
+        self.assertFalse(report["matching"])
+        self.assertFalse((self.home / "agent-playbook").exists())
 
     def test_failed_atomic_replace_keeps_old_file_and_backup(self):
         self.home.mkdir(parents=True)

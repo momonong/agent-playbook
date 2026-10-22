@@ -24,7 +24,10 @@ def resolve_home(explicit=None, *, environ=None, home=None) -> Path:
     env = os.environ if environ is None else environ
     value = explicit if explicit is not None else env.get("CODEX_HOME")
     if value is None:
-        return ((Path.home() if home is None else Path(home)) / ".codex").resolve()
+        path = (Path.home() if home is None else Path(home)) / ".codex"
+        if any(is_linked(p) for p in (path, *path.parents)):
+            raise ValueError("Codex home must not contain symlinks or junctions")
+        return path.resolve()
     if not value or any(c in str(value) for c in "\r\n\x00`"):
         raise ValueError("Codex home must be a nonempty native absolute path without control/backtick characters")
     path = Path(value).expanduser()
@@ -32,6 +35,8 @@ def resolve_home(explicit=None, *, environ=None, home=None) -> Path:
         raise ValueError("Windows paths cannot be used in this environment; resolve the path on the executing host")
     if not path.is_absolute():
         raise ValueError("Codex home must be absolute; relative and drive-relative paths are ambiguous")
+    if any(is_linked(p) for p in (path, *path.parents)):
+        raise ValueError("Codex home must not contain symlinks or junctions")
     return path.resolve()
 
 
@@ -94,6 +99,10 @@ def documents_at(repo: Path, commit: str):
             continue
         meta, raw_name = record.split(b"\t", 1)
         name = raw_name.decode("utf-8")
+        # Skill packages (including their Markdown licenses) have a separate,
+        # manifest-verified payload, not a place in immutable guide snapshots.
+        if name.startswith(("skills/packages/", "skills/licenses/")):
+            continue
         if not name.endswith(".md"):
             continue
         if meta.split()[0] != b"100644" or ".." in Path(name).parts or Path(name).is_absolute() or "\\" in name:
@@ -143,7 +152,8 @@ def install(home: Path, commit: str, payload: dict[str, bytes], *, apply=False, 
         verify_snapshot()
     report = dict(source_commit=commit, guides_commit=pinned, snapshot=str(snapshot), target=str(target),
                   current_sha256=old_hash, installed_sha256=digest(core_bytes),
-                  installed_bytes=len(core_bytes), mode="apply" if apply else "preview")
+                  installed_bytes=len(core_bytes), snapshot_status="matching" if snapshot.exists() else "missing",
+                  mode="apply" if apply else "preview")
     if not apply:
         return report
     home.mkdir(parents=True, exist_ok=True)
@@ -168,6 +178,7 @@ def install(home: Path, commit: str, payload: dict[str, bytes], *, apply=False, 
                 if stage.exists():
                     shutil.rmtree(stage)
         verify_snapshot()
+        report["snapshot_status"] = "matching"
         if old == core_bytes:
             report["unchanged"] = True
             return report
@@ -207,6 +218,36 @@ def install(home: Path, commit: str, payload: dict[str, bytes], *, apply=False, 
         lock.unlink()
 
 
+def install_environment(home, commit, payload, *, apply=False, expected=None,
+                        guide_payload=None, skills_source=None, skills_home=None,
+                        expected_skills=None):
+    """Preflight both targets, then report the separately atomic installation steps."""
+    core = install(home, commit, payload, expected=expected, guide_payload=guide_payload)
+    core["matching"] = core["current_sha256"] == core["installed_sha256"] and core["snapshot_status"] == "matching"
+    if skills_source is None:
+        return install(home, commit, payload, apply=True, expected=expected, guide_payload=guide_payload) if apply else core
+    if __package__:
+        from .skill_sync import plan_skills, require_applicable, skills_lock, apply_skills
+    else:
+        from skill_sync import plan_skills, require_applicable, skills_lock, apply_skills
+    plan = plan_skills(home, skills_home, skills_source, commit)
+    report = {"mode": "apply" if apply else "preview", "core": core, "skills": plan}
+    if not apply:
+        return report
+    require_applicable(plan, expected_skills)
+    with skills_lock(skills_home):
+        require_applicable(plan_skills(home, skills_home, skills_source, commit), expected_skills)
+        report["core"] = install(home, commit, payload, apply=True, expected=expected, guide_payload=guide_payload)
+        try:
+            report["skills"] = apply_skills(home, skills_home, skills_source, commit, expected_skills)
+        except (OSError, ValueError) as exc:
+            # Core replacement is already committed; do not claim cross-step rollback.
+            report.update(status="partial", error=f"Core step completed; skill step failed: {exc}")
+            return report
+    report["status"] = "installed"
+    return report
+
+
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8", errors="backslashreplace")
@@ -214,7 +255,12 @@ def main():
     parser.add_argument("--commit", required=True)
     parser.add_argument("--codex-home")
     parser.add_argument("--expect-current-sha256")
-    parser.add_argument("--apply", action="store_true")
+    action = parser.add_mutually_exclusive_group()
+    action.add_argument("--apply", action="store_true")
+    action.add_argument("--check", action="store_true", help="Read-only verification; exit 2 when files, enable state or required runtimes need attention")
+    parser.add_argument("--with-skills", action="store_true", help="Opt in to manifest-managed personal skills")
+    parser.add_argument("--skills-home", help="Explicit native absolute personal skills directory")
+    parser.add_argument("--expect-skills-sha256", help="Skill target state digest from preview")
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[1]
     try:
@@ -223,11 +269,35 @@ def main():
         guides = documents_at(repo, pinned)
         if args.apply:
             subprocess.run(["git", "-C", str(repo), "merge-base", "--is-ancestor", args.commit, "origin/main"], check=True)
-        print(json.dumps(install(resolve_home(args.codex_home), args.commit, payload,
-                                 apply=args.apply, expected=args.expect_current_sha256, guide_payload=guides), ensure_ascii=False, indent=2))
+        if not args.with_skills and (args.skills_home is not None or args.expect_skills_sha256 is not None):
+            raise ValueError("Skill options require --with-skills")
+        home = resolve_home(args.codex_home)
+        source, skills_home = None, None
+        if args.with_skills:
+            if __package__:
+                from .skill_sync import skills_at, resolve_skills_home
+            else:
+                from skill_sync import skills_at, resolve_skills_home
+            source = skills_at(repo, args.commit)
+            skills_home = resolve_skills_home(args.skills_home, home, source["packages"])
+        report = install_environment(home, args.commit, payload, apply=args.apply,
+                                     expected=args.expect_current_sha256, guide_payload=guides,
+                                     skills_source=source, skills_home=skills_home,
+                                     expected_skills=args.expect_skills_sha256)
+        if args.check:
+            report["mode"] = "check"
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        if report.get("status") == "partial":
+            return 1
+        if args.with_skills:
+            if (args.check or args.apply) and (not report["skills"]["ready"] or (args.check and not report["core"]["matching"])):
+                return 2
+        elif args.check and not report["matching"]:
+            return 2
+        return 0
     except (ValueError, OSError, subprocess.CalledProcessError) as exc:
         parser.exit(1, f"Installation stopped: {exc}\n")
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

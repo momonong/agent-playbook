@@ -1,4 +1,4 @@
-<!-- agent-playbook guides-commit: 565652c30dfbb1837761b75d9749b5fcba2cf7a3 -->
+<!-- agent-playbook guides-commit: feaf0376a2c2a3914a1aadd11abbce99812c3436 -->
 # 合作核心指示
 
 使用繁體中文，先說結論，再提供必要理由與證據；可直接討論架構、系統設計與技術取捨。
@@ -50,7 +50,7 @@ Astra Ultra 負責討論、決策、推進與最後核對；已確認且已授�
 
 1. **固定快照**：Codex home 依已確認客戶端位置、`CODEX_HOME`、原生使用者主目錄下 `.codex` 的順序解析。讀其下 `agent-playbook/versions/` 中以完整指南 commit 命名的目錄，核對 `SOURCE_COMMIT`。
 2. **本機 repo**：先用已指定／登錄的 agent-playbook 位置，其次 `PROJECTS_ROOT` 下的 `agent-playbook`；未設定才核對原生主目錄下 `projects/agent-playbook`。確認存在及 repo 身分，以 `git show` 等唯讀方式讀固定 commit，不切分支或採用工作樹草稿。
-3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/565652c30dfbb1837761b75d9749b5fcba2cf7a3/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
+3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/feaf0376a2c2a3914a1aadd11abbce99812c3436/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
 
 不假設磁碟代號、使用者名稱或跨裝置／WSL／遠端路徑相同，不掃全磁碟。只接受固定版本；其他核心只供歷史核對，不取代已載入核心。
 
@@ -60,7 +60,7 @@ Astra Ultra 負責討論、決策、推進與最後核對；已確認且已授�
 | 外部 CLI task 選型、派工、交接、接續與驗收 | `guides/external-execution.md`；合作及模型規則依相應觸發條件讀取 |
 | 確認學習主軸、建立／接任 learn、教學、學習紀錄或開發學習交接 | `guides/learning.md`；跨對話另讀合作指南 |
 | 安排模型分工，或選擇／調整模型、推理深度與速度 | `guides/model-selection.md` |
-| 修改或定位專案、安排目錄、建立分支、依賴、驗證、整合、交付（含 HTML）或清理 | `guides/engineering.md` 相關章節 |
+| 修改或定位專案、裝置同步、安排目錄、建立分支、依賴、驗證、整合、交付（含 HTML）或清理 | `guides/engineering.md` 相關章節 |
 | 查核／接入／變更 API 配額與供應商路由（api-quota-broker）、本機模型、家用伺服器（HP／ASUS、momonong.me、Cloudflare Tunnel／Caddy），或安排國網／NCHC／Nano5 訓練、研究 smoke／Slurm 工作 | `guides/service-integration.md`，再讀指定專案契約 |
 
 指南不可讀時，說明缺少的文件與版本，只暫停依賴缺失規則的操作；不猜測權限、略過限制或假裝已讀。核心仍適用，無關工作可繼續。

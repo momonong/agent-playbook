@@ -225,6 +225,9 @@ class SkillSyncTests(unittest.TestCase):
             run.return_value = subprocess.CompletedProcess([], 0, "v22.1.0\n", "")
             self.assertEqual(probe_requirement({"command": "node", "min_version": "20"})["status"], "available")
             self.assertEqual(run.call_args.args[0], ["/known/node", "--version"])
+            run.return_value = subprocess.CompletedProcess([], 0, "Python 3.11.0\n", "")
+            self.assertEqual(probe_requirement({"command": "python", "min_version": "3.9"})["status"], "available")
+            self.assertEqual(run.call_args.args[0], [sys.executable, "--version"])
 
     def test_foreign_receipt_and_stale_lock_refuse(self):
         self.apply()
@@ -385,15 +388,53 @@ class SkillSourceTests(unittest.TestCase):
 
     def test_actual_vendor_manifest_hashes_and_exact_original_adoption_rules(self):
         repo = Path(__file__).resolve().parents[1]
-        manifest = json.loads((repo / "skills/manifest.json").read_bytes())
-        self.assertEqual(len(manifest["skills"]), 5)
+        manifest_bytes = (repo / "skills/manifest.json").read_bytes()
+        manifest = json.loads(manifest_bytes)
+        expected_names = {"answer-me-with-html", "design-taste-frontend", "grill-me",
+                          "grilling", "career-profile-builder", "ui-ux-pro-max"}
+        self.assertEqual({entry["name"] for entry in manifest["skills"]}, expected_names)
+        source = {"manifest_sha256": digest(manifest_bytes), "packages": {}}
         for entry in manifest["skills"]:
             directory = repo / entry["path"]
-            actual = {p.relative_to(directory).as_posix(): digest(p.read_bytes()) for p in directory.rglob("*") if p.is_file()}
+            contents = {p.relative_to(directory).as_posix(): p.read_bytes() for p in directory.rglob("*") if p.is_file()}
+            actual = {name: digest(content) for name, content in contents.items()}
             self.assertEqual(entry["files"], actual)
+            source["packages"][entry["name"]] = {"entry": entry, "contents": contents}
             if "adoption_files" in entry:
                 self.assertTrue(set(actual) - set(entry["adoption_files"]) <= {"LICENSE", "THIRD_PARTY_NOTICES"})
                 self.assertTrue(all(actual[n] == h for n, h in entry["adoption_files"].items()))
+        # Exercise the real six-package payload on a new device and an exact
+        # unmanaged installation. Runtime behavior is tested separately.
+        for device, initial_status in (("new", "missing"), ("existing", "adopt")):
+            home, skills = self.repo / device / ".codex", self.repo / device / "skills"
+            if initial_status == "adopt":
+                for name, package in source["packages"].items():
+                    write_package(skills / name, package["contents"])
+            with patch("scripts.skill_sync.probe_requirement", side_effect=lambda r: dict(r, status="available")):
+                planned = plan_skills(home, skills, source, SHA)
+                self.assertEqual({s["status"] for s in planned["skills"]}, {initial_status})
+                with skills_lock(skills):
+                    result = apply_skills(home, skills, source, SHA, planned["skills_state_sha256"])
+            self.assertTrue(result["verified"])
+            self.assertEqual({s["status"] for s in result["skills"]}, {"matching"})
+            for name, package in source["packages"].items():
+                self.assertEqual(tree_state(skills / name), desired_state(package["contents"]))
+
+    def test_ui_ux_query_uses_packaged_data_from_arbitrary_cwd_without_writes(self):
+        package = Path(__file__).resolve().parents[1] / "skills/packages/ui-ux-pro-max"
+        before = tree_state(package)
+        cwd = self.repo / "離線查詢 space"
+        cwd.mkdir()
+        query = "keyboard focus modal 鍵盤"
+        completed = subprocess.run([sys.executable, "-B", str(package / "scripts/search.py"),
+                                    query, "--domain", "ux", "--json"],
+                                   cwd=cwd, capture_output=True, text=True, encoding="utf-8", timeout=15)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        report = json.loads(completed.stdout)
+        self.assertEqual((report["domain"], report["query"]), ("ux", query))
+        self.assertGreater(report["count"], 0)
+        self.assertEqual(tree_state(package), before)
+        self.assertEqual(list(cwd.iterdir()), [])
 
     @unittest.skipIf(os.name == "nt", "Git symlink fixture needs native symlink support")
     def test_git_symlink_package_is_not_installed(self):

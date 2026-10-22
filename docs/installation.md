@@ -16,7 +16,7 @@
 
 先核對 `git status --short --branch`、`git remote -v`、實際 HEAD 與使用中的任務。只在自己可用的乾淨目錄切換 main；不清除其他人的變更。新裝置先在已授權位置 clone `https://github.com/momonong/agent-playbook.git`，再進入 repo；既有裝置沿用原目錄。
 
-以下同時安裝核心、指南與五份受管技能。要只沿用舊的核心安裝介面，移除三次命令的 `--with-skills` 及 apply 的 `--expect-skills-sha256` 即可。
+以下同時安裝核心、指南與六份受管技能。要只沿用舊的核心安裝介面，移除三次命令的 `--with-skills` 及 apply 的 `--expect-skills-sha256` 即可。
 
 macOS／Linux（Bash／Zsh）：
 
@@ -78,7 +78,7 @@ uv run --locked python scripts/install.py --commit $playbookCommit --with-skills
 
 ## 技能來源與能力界線
 
-[skills/manifest.json](../skills/manifest.json) 固定五包來源 commit、適配狀態、每檔 SHA-256、授權及必需依賴，內容位於 `skills/packages/`；套用只讀指定 Git commit，不信任工作樹草稿，也不抓上游 latest。套件完整性與授權說明見[技能清單](../skills/README.md)。新增可共用技能的已授權安裝任務，須把來源、版本、授權、依賴、快照與 manifest 一起交付；只做本機實驗時明示不納管。
+[skills/manifest.json](../skills/manifest.json) 固定六包來源 commit、適配狀態、每檔 SHA-256、授權及必需依賴，內容位於 `skills/packages/`；套用只讀指定 Git commit，不信任工作樹草稿，也不抓上游 latest。套件完整性與授權說明見[技能清單](../skills/README.md)。新增可共用技能的已授權安裝任務，須把來源、版本、授權、依賴、快照與 manifest 一起交付；只做本機實驗時明示不納管。
 
 | 技能 | 必需／額外能力 |
 |---|---|
@@ -86,10 +86,36 @@ uv run --locked python scripts/install.py --commit $playbookCommit --with-skills
 | design-taste-frontend | 完整 inspect／scenes 需要 Node 22+ 與上述瀏覽器；draw／lint／assets 的上游最低版本是 Node 18，但共用完整工作流採 22+ |
 | grill-me、grilling | 無額外 runtime；前者依賴後者，保留上游 metadata |
 | career-profile-builder | 無額外 runtime；保留目前已確認適配，不納入履歷或私人職涯資料 |
+| ui-ux-pro-max | Python 標準函式庫及隨包資料；完整 payload 靜態下限 3.9，共用安裝環境仍為 3.11+；純查詢可離線，不需 pip／API key |
 
 安裝器的 runtime 探測不保證瀏覽器、外部字型／圖片網路、影片輸出、客戶端工具或服務可用；依實際使用場景另核對。HTML 技能上游有更新檢查及可選 TTS／影片行為，同步不執行或授權這些外部呼叫，不複製環境變數或憑證。
 
 內建與插件技能不 vendor、不複製 cache、不承諾插件版本一致。每台裝置按已授權功能核對實際客戶端的插件／瀏覽器工具及連線狀態；若需新增、登入或接外部服務，依該次授權處理。
+
+### ui-ux-pro-max 的本機查詢
+
+上游 `SKILL.md` 保留 Claude 的 `${CLAUDE_PLUGIN_ROOT}/.claude/...` 範例。Codex 執行時先從實際載入的 `SKILL.md` 所在目錄，或已核對安裝預覽的 `skills.skills_home` 定位 `ui-ux-pro-max`；不假設 Claude 變數存在，也不在專案建立 `.claude` 目錄。以下 `skills_home`／`skillsHome` 必須先設為該預覽輸出的原生絕對路徑，並使用本環境已確認的 Python 3.11+。
+
+macOS／Linux（Bash／Zsh）：
+
+```sh
+skill_dir="$skills_home/ui-ux-pro-max"
+test -f "$skill_dir/scripts/search.py" || exit 1
+python3 -B "$skill_dir/scripts/search.py" "keyboard focus modal" --domain ux --json
+```
+
+Windows（PowerShell）：
+
+```powershell
+$skillDir = Join-Path $skillsHome 'ui-ux-pro-max'
+$searchScript = Join-Path $skillDir 'scripts/search.py'
+if (-not (Test-Path -LiteralPath $searchScript -PathType Leaf)) { throw '找不到已核對的技能腳本' }
+python -B $searchScript 'keyboard focus modal' --domain ux --json
+```
+
+已確認使用 Python Launcher 的 Windows 可將 `python -B` 換成 `py -3 -B`。`-B` 防止 Python 在受管技能目錄產生 `__pycache__`；完整樹同步仍拒絕額外檔案，不新增忽略例外。資料依腳本自身位置解析，查詢可從任意 cwd 執行；無 `--persist` 時僅輸出結果，不寫設計稿、不連網。完整包的 3.9 靜態下限不代表已在原生 3.9 執行驗證。
+
+需要保存設計稿時才加 `--design-system --persist --output-dir`，`--output-dir` 指向已授權專案的明確原生絕對路徑；先讀現有 `design-system/<project-slug>/MASTER.md`，未獲覆寫授權不加 `--force`。同步本身不執行保存、刷新資料或上游維護腳本。與 taste 的互補及既有專案設計決策見[技能能力說明](../skills/README.md#能力與未驗證範圍)，不要求每次重跑兩套完整流程。
 
 ## 備份、衝突與回復
 
@@ -97,6 +123,7 @@ uv run --locked python scripts/install.py --commit $playbookCommit --with-skills
 - 核心更新完整備份到 Codex home 的 `backups/`，同目錄暫存檔及 `os.replace` 安裝。指南按核心首行 commit 放 `agent-playbook/versions/<guides_commit>/`，已有不同內容就停止；技能 Markdown 不混入指南快照。
 - 技能 receipt 在 Codex home 的 `agent-playbook/skills-receipt.json`，只含位置、來源與檔案 hash。技能更新／授權檔補齊前，先將所有受影響技能備份到 `agent-playbook/skill-backups/<UTC時間>/` 並驗證；原 receipt 也保存。核心與技能各有鎖，過期鎖需查明，不能自動刪除。
 - 預覽後核心 bytes 或技能目錄／receipt／已知停用狀態變更，CAS 拒絕。未受管同名目錄只有完整 bytes 相符才採用；`adoption_files` 例外只允許精確核對過的原 tree，目標只新增頂層 `LICENSE`、`NOTICE`、`THIRD_PARTY_NOTICES`（可帶 `.txt`／`.md`）純文字。額外檔案、空目錄或任何原檔修改均為衝突。
+- `ui-ux-pro-max` 新機為 `missing`；已有相同 74 檔且無額外內容時為 `adopt`，apply 只登錄受管 receipt；已有同版受管內容則為 `matching`。舊安裝的 `INSTALL_SOURCE.json` 是本機歷史資料，不是共享 payload；存在時仍為 `conflict`。裝置承接者須先核對並在相應授權內將該收據原樣原子移到技能目錄外的本機備份、驗證 hash，再重新預覽取得新的 CAS；不提交、同步、刪除或由安裝器自動排除。其他本機修改或額外檔案仍需個別處理，不能套用收據搬移作通用忽略規則。
 - 受管更新也須先等於上次 receipt；本機修改保留並交由使用者決定如何納回來源。manifest 移除技能不刪目的地或歷史 receipt。未納管、system、插件、其他設定與執行狀態保持原狀。
 - 受管檔案、技能、快照、receipt 與備份路徑不接受 symlink／junction；Windows 3.11／3.12 的 reparse point 都停止。不遷移 OS ACL，特殊 ACL／UNC／網路檔案系統需另行驗證。
 - 核心與技能是分開的提交步驟，**不是整批原子交易**。全體衝突先檢查；核心已成功而技能失敗時明報 `status: partial`。receipt 提交前技能替換失敗會回復技能；回復本身失敗會保留復原目錄並明報。receipt 提交後的驗證失敗保留同版技能與 receipt，明報未完成驗證，不假稱全部回復。

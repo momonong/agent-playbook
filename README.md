@@ -30,6 +30,9 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | [docs/update-2026-10-20-html-preview-integration.md](docs/update-2026-10-20-html-preview-integration.md) | 工程驗證通過的私人 HTML 預覽之固定契約、授權範圍及正式接入 |
 | [archive/original-2026-09-30.md](archive/original-2026-09-30.md) | 不變的歷史原文，僅供比對，不屬當前指示 |
 | [AGENTS.md](AGENTS.md) | 修改本 repo 時的維護規則，並非全域指示 |
+| [docs/device-sync.md](docs/device-sync.md) | 每台裝置的唯一承接對話、同步範圍與開場指示 |
+| [docs/update-2026-10-22-device-sync.md](docs/update-2026-10-22-device-sync.md) | 裝置同步、技能來源與保護規則的決策及需求映射 |
+| [skills/README.md](skills/README.md) | 共用個人技能快照、來源／授權與依賴 |
 
 ## 儲存與定位
 
@@ -75,11 +78,11 @@ API 配額與供應商路由接入先讀 [服務指南](guides/service-integrati
 
 ## 可選：本機安裝／更新
 
-適合需要本機指南快照及備份的人；直接複製貼上的使用者不必執行。以下流程供使用者或已獲授權代理使用；本文件本身不授權更新全域設定。
+新裝置在已授權位置 clone 本 repo，既有裝置沿用原目錄取得已合併版本；Git 取得來源後仍須明確安裝。Git 與 Python 3.11+ 即可直接執行 `python scripts/install.py`；既有環境建議 `uv run --locked python scripts/install.py`。缺工具先回報，由該裝置對話依授權處理，不自動安裝全域 runtime。
 
-依[安裝流程與保護規則](docs/installation.md#一次安裝流程)執行：核對來源及指示優先順序、預覽固定 commit、備份舊檔、保存釘選指南、原子安裝並驗證 hash。只有核對過且完成約定 Git 交付的版本才作正式安裝；本文件不授權改設定。
+每台環境沿用或由使用者指定一個 `agent-playbook｜裝置名稱` 對話，負責本裝置開發環境與已確認習慣同步；遠端／WSL 分開核對。依[裝置契約與開場指示](docs/device-sync.md)，再走[安裝文件](docs/installation.md#一次安裝流程)的固定完整 SHA → 預覽 → 雙 hash CAS／備份安裝 → check。加 `--with-skills` 同步五份 manifest 技能；省略時保留原核心／指南安裝介面。直接貼核心的使用者仍不必執行。
 
-安裝不切換模型或恢復舊任務，也不保證舊對話自動重新載入。核心與指南各以 commit 追溯，不用 symlink 連到可變工作分支；完整步驟只在安裝文件維護。
+同一版本提供核心、釘選指南及技能的相同 bytes；工具／插件、客戶端發現與人工接受另核對。安裝不改模型、effort 或其他設定、不搬技能位置、不恢復舊任務，也不保證既有對話重新載入。新共用技能的已授權安裝任務須一併納入快照與 manifest，避免只裝一台；完整保護與命令只在安裝文件維護。
 
 ## 回復
 

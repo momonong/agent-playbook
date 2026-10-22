@@ -208,7 +208,7 @@ class SkillSyncTests(unittest.TestCase):
     def test_disabled_config_and_missing_runtime_are_separate_from_installation(self):
         self.home.mkdir(parents=True)
         path = (self.skills / "example").as_posix()
-        (self.home / "config.toml").write_text(f'[[skills.config]]\npath = "{path}"\nenabled = false\n')
+        (self.home / "config.toml").write_text(f'[[skills.config]]\npath = "{path}"\nenabled = false\n', encoding="utf-8")
         self.source["packages"]["example"]["entry"]["requires"] = [{"command": "node", "min_version": "20"}]
         with patch("scripts.skill_sync.shutil.which", return_value=None):
             result = self.apply()
@@ -216,7 +216,7 @@ class SkillSyncTests(unittest.TestCase):
         self.assertFalse(result["ready"])
         self.assertTrue(result["skills"][0]["disabled"])
         self.assertEqual(result["skills"][0]["requires"][0]["status"], "missing")
-        self.assertIn("enabled = false", (self.home / "config.toml").read_text())
+        self.assertIn("enabled = false", (self.home / "config.toml").read_text(encoding="utf-8"))
 
     def test_explicit_only_skill_is_not_disabled_and_probe_only_runs_version(self):
         self.source["packages"]["example"]["contents"]["agents/openai.yaml"] = b"policy:\n  allow_implicit_invocation: false\n"
@@ -299,6 +299,12 @@ class SkillSourceTests(unittest.TestCase):
     def test_cli_readonly_check_apply_and_legacy_core_interface(self):
         source_root = Path(__file__).resolve().parents[1]
         write_package(self.repo, {f"scripts/{n}": (source_root / "scripts" / n).read_bytes() for n in ("install.py", "skill_sync.py")})
+        # Match the real checkout's ignore rules. Always generate bytecode so a
+        # caller's -B environment or global Git ignore cannot hide dirty fixtures.
+        (self.repo / ".gitignore").write_bytes((source_root / ".gitignore").read_bytes())
+        self.git("config", "core.excludesfile", os.devnull)
+        cli_env = {key: value for key, value in os.environ.items()
+                   if key not in {"PYTHONDONTWRITEBYTECODE", "PYTHONPYCACHEPREFIX"}}
         pinned = self.commit()
         core_path = self.repo / "instructions/codex.md"
         core_path.write_bytes(core_path.read_bytes().replace(SHA.encode(), pinned.encode()))
@@ -309,18 +315,20 @@ class SkillSourceTests(unittest.TestCase):
         self.addCleanup(shutil.rmtree, skills, True)
         command = [sys.executable, str(self.repo / "scripts/install.py"), "--commit", commit,
                    "--codex-home", str(home), "--skills-home", str(skills), "--with-skills"]
-        checked = subprocess.run(command + ["--check"], capture_output=True, check=False)
+        checked = subprocess.run(command + ["--check"], capture_output=True, check=False, env=cli_env)
         self.assertEqual(checked.returncode, 2, checked.stderr.decode())
         report = json.loads(checked.stdout)
         self.assertFalse(home.exists())
         self.assertFalse(skills.exists())
         self.assertEqual(report["core"]["snapshot_status"], "missing")
+        self.assertTrue(list((self.repo / "scripts/__pycache__").glob("skill_sync.*.pyc")))
+        self.assertEqual(self.git("status", "--porcelain"), b"")
         applied = subprocess.run(command + ["--apply", "--expect-current-sha256", "missing",
-                                            "--expect-skills-sha256", report["skills"]["skills_state_sha256"]], capture_output=True, check=False)
+                                            "--expect-skills-sha256", report["skills"]["skills_state_sha256"]], capture_output=True, check=False, env=cli_env)
         self.assertEqual(applied.returncode, 0, applied.stderr.decode())
-        self.assertEqual(subprocess.run(command + ["--check"], capture_output=True).returncode, 0)
+        self.assertEqual(subprocess.run(command + ["--check"], capture_output=True, env=cli_env).returncode, 0)
         (self.repo / "skills/packages/example/SKILL.md").write_bytes(b"dirty working source")
-        dirty = subprocess.run(command + ["--check"], capture_output=True)
+        dirty = subprocess.run(command + ["--check"], capture_output=True, env=cli_env)
         self.assertEqual(dirty.returncode, 1)
         self.assertIn(b"clean checkout", dirty.stderr)
 

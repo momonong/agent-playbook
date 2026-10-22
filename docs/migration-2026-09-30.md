@@ -135,3 +135,11 @@
 需求映射集中於[家用伺服器章](../guides/service-integration.md#家用伺服器selfhost-servers)：先核對 repo 身分與工作狀態，已指定固定契約優先，未指定才向可信遠端核對預設分支與最新已合併 SHA；記錄來源、日期並固定同版全文及引用，保護草稿與既有工作樹。缺少版本證據或全文時只停止相依操作，不宣稱最新；文件版本與實際部署分開核對。README 只保留入口，不複製完整規則，不將當次機器路徑、分支名或外部 SHA 寫成永久定位。
 
 核心維持 8,993 → 8,993 bytes（UTF-8）；正式發布時只在指南提交後機械更新 `guides-commit`，完整文件定位規則留在服務指南。其他服務的固定契約、工程路徑、模型分工、操作授權、正式批准與資料／服務保護不變；Git 交付與安裝的實際結果另行核對回報。
+
+## 2026-10-22 受限部署判斷與 grill-me
+
+[本次決策](update-2026-10-22-scoped-deployment-and-grill-me.md)將受限部署能力矩陣與唯讀 preflight 路由集中於[服務指南](../guides/service-integration.md#家用伺服器selfhost-servers)：分別核對 Doppler 憑證、SSH／API 能力、使用者授權及 Codex 沙箱；範圍內直接完成日常操作，失敗先分類及核對實際工具／通道，真正超出通道 scope 才準備最小 root gate，不新增通用 sudo 或以換身分 fallback。具體矩陣與流程仍由 `selfhost-servers` 的 `docs/two-host-deployment.md` 維護，不複製主機現況或自行授權新操作。
+
+使用者另確認安裝作者原版 `grill-me`，固定來源及必要的 `grilling` 入口見同一決策；使用界線放[合作指南](../guides/collaboration.md#使用-grill-me-深問方案)，由 Astra 在原對話處理明確要求的方案深問、先查事實、沿用決策並在共識／停止時收束。問答不代替工程、部署或 Git 授權；不改上游技能、既有 taste、模型分工或其他任務流程。
+
+核心由 8,993 → 9,011 bytes（UTF-8，增加 18 bytes），只在既有必讀表補 `grill-me 討論` 觸發，確保單純方案討論也會在使用技能前讀到界線；完整規則仍各有一份主要指南，README 只留入口。指南提交後才更新固定 pin；歷史原文、既有工作、正式批准與資料／服務保護不變。本紀錄不宣稱 Git 交付、技能安裝或本機同步已完成，實際結果分別核對回報。

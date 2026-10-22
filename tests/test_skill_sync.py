@@ -280,7 +280,11 @@ class SkillSourceTests(unittest.TestCase):
         write_package(self.repo, fixture())
 
     def git(self, *args):
-        return subprocess.check_output(["git", "-C", str(self.repo), *args], stderr=subprocess.STDOUT)
+        try:
+            return subprocess.check_output(["git", "-C", str(self.repo), *args], stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as exc:
+            self.fail(f"Fixture git {' '.join(args)} exited {exc.returncode}:\n"
+                      f"{exc.output.decode('utf-8', errors='replace')}")
 
     def commit(self):
         (self.repo / "skills/manifest.json").write_bytes(canonical({"schema_version": 1, "skills": [self.entry]}))
@@ -302,7 +306,9 @@ class SkillSourceTests(unittest.TestCase):
         # Match the real checkout's ignore rules. Always generate bytecode so a
         # caller's -B environment or global Git ignore cannot hide dirty fixtures.
         (self.repo / ".gitignore").write_bytes((source_root / ".gitignore").read_bytes())
-        self.git("config", "core.excludesfile", os.devnull)
+        empty_excludes = self.repo / ".git" / "empty-global-excludes"
+        empty_excludes.write_bytes(b"")
+        self.git("config", "core.excludesfile", str(empty_excludes))
         cli_env = {key: value for key, value in os.environ.items()
                    if key not in {"PYTHONDONTWRITEBYTECODE", "PYTHONPYCACHEPREFIX"}}
         pinned = self.commit()

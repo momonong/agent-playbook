@@ -16,7 +16,7 @@
 
 先核對 `git status --short --branch`、`git remote -v`、實際 HEAD 與使用中的任務。只在自己可用的乾淨目錄切換 main；不清除其他人的變更。新裝置先在已授權位置 clone `https://github.com/momonong/agent-playbook.git`，再進入 repo；既有裝置沿用原目錄。
 
-以下同時安裝核心、指南與六份受管技能。要只沿用舊的核心安裝介面，移除三次命令的 `--with-skills` 及 apply 的 `--expect-skills-sha256` 即可。
+以下同時安裝核心、指南與七份受管技能。要只沿用舊的核心安裝介面，移除三次命令的 `--with-skills` 及 apply 的 `--expect-skills-sha256` 即可。Superpowers 官方插件另依下方逐裝置核對，不由這些命令安裝。
 
 macOS／Linux（Bash／Zsh）：
 
@@ -78,7 +78,7 @@ uv run --locked python scripts/install.py --commit $playbookCommit --with-skills
 
 ## 技能來源與能力界線
 
-[skills/manifest.json](../skills/manifest.json) 固定六包來源 commit、適配狀態、每檔 SHA-256、授權及必需依賴，內容位於 `skills/packages/`；套用只讀指定 Git commit，不信任工作樹草稿，也不抓上游 latest。套件完整性與授權說明見[技能清單](../skills/README.md)。新增可共用技能的已授權安裝任務，須把來源、版本、授權、依賴、快照與 manifest 一起交付；只做本機實驗時明示不納管。
+[skills/manifest.json](../skills/manifest.json) 固定七包來源 commit、適配狀態、每檔 SHA-256、授權及必需依賴，內容位於 `skills/packages/`；套用只讀指定 Git commit，不信任工作樹草稿，也不抓上游 latest。套件完整性與授權說明見[技能清單](../skills/README.md)。新增可共用技能的已授權安裝任務，須把來源、版本、授權、依賴、快照與 manifest 一起交付；只做本機實驗時明示不納管。
 
 | 技能 | 必需／額外能力 |
 |---|---|
@@ -87,10 +87,19 @@ uv run --locked python scripts/install.py --commit $playbookCommit --with-skills
 | grill-me、grilling | 無額外 runtime；前者依賴後者，保留上游 metadata |
 | career-profile-builder | 無額外 runtime；保留目前已確認適配，不納入履歷或私人職涯資料 |
 | ui-ux-pro-max | Python 標準函式庫及隨包資料；完整 payload 靜態下限 3.9，共用安裝環境仍為 3.11+；純查詢可離線，不需 pip／API key |
+| caveman | 基本純文字技能，無額外 runtime／兄弟技能依賴；只同步 README、SKILL 與三份授權文字 |
 
 安裝器的 runtime 探測不保證瀏覽器、外部字型／圖片網路、影片輸出、客戶端工具或服務可用；依實際使用場景另核對。HTML 技能上游有更新檢查及可選 TTS／影片行為，同步不執行或授權這些外部呼叫，不複製環境變數或憑證。
 
 內建與插件技能不 vendor、不複製 cache、不承諾插件版本一致。每台裝置按已授權功能核對實際客戶端的插件／瀏覽器工具及連線狀態；若需新增、登入或接外部服務，依該次授權處理。
+
+### Superpowers 官方插件
+
+使用者已選擇採用 Superpowers，走 Codex 官方插件目錄；在當台客戶端的 Coding 分類或正式搜尋中核對 `superpowers`／顯示名稱 `Superpowers` 與作者來源，再在該機安裝授權內安裝。流程參照[作者的 Codex App 說明](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/README.md#codex-app)；此固定 commit 僅作相容性審查來源，不代表目錄提供或各機已裝的插件必為同版。
+
+每台分別回報是否可取得、已安裝、已啟用、可取得的版本，以及客戶端實際技能入口；搜尋顯示可安裝、建議卡片或其他裝置裝好都不等於本機安裝完成。缺少入口或無法確認時明列未驗證，不複製其他裝置的插件 cache／hook 或改用手動 vendor 充當成功。本 repo 與安裝器不安裝插件；`--with-skills --check` 只核對七份檔案技能，不能驗證 Superpowers。
+
+Superpowers 的工作流依[合作指南](../guides/collaboration.md#superpowers-與-caveman)接入既有授權、模型分工及驗證原則。它不授權額外服務、Git 操作、worktree 或清理，也不改本機模型／effort／插件設定。基本 Caveman 的聊天模式由使用者在所需對話呼叫，依上游會話規則持續至停止；同步不強制所有對話啟動，不安裝其 CLI、Proxy、Auto、hook、兄弟模式或改寫啟動設定。
 
 ### ui-ux-pro-max 的本機查詢
 

@@ -161,3 +161,13 @@
 既有本機 `INSTALL_SOURCE.json` 是第 75 檔歷史安裝收據，不進 Git 或共享 manifest；本次本機同步先原樣原子移至技能目錄外的本機備份並核對 hash，再重新預覽／CAS 採用完整相同的 74 檔。新機新增、同版未受管 exact adoption 及既有受管 matching 沿用原安裝器；額外檔案、修改、symlink、CAS、備份與回復保護均不放寬，不把本次收據處理概括為忽略本機資料。
 
 核心維持 9,026 → 9,026 bytes（UTF-8），只在指南提交後機械重新釘選真實 commit；工程指南僅補最短 Python 查詢路由，來源、依賴及操作細節留在技能與安裝文件。歷史原文、既有模型／設定／任務與資料保護保持；Git、原生 CI、本機安裝、客戶端發現、查詢功能及人工接受分別回報，本紀錄不代替實際驗證。
+
+## 2026-10-23 Superpowers 與基本 Caveman
+
+使用者選擇「不然就先用 superpower 好了 還有 caveman」，本輪納入 Superpowers 官方插件的逐裝置核對入口與基本 Caveman 共用技能。Superpowers 不 vendor、不複製 cache／hook、不建立第八個 manifest 包；已選採用與正式目錄可安裝不等於每台已安裝／啟用。插件流程與狀態集中於[安裝文件](installation.md#superpowers-官方插件)，[裝置契約](device-sync.md)只留入口。
+
+Caveman 固定 `JuliusBrussee/caveman` commit `bad48a0e1df55e05e3f52249afa35ecc1909ee76`，保存 `skills/caveman` 的 README／SKILL 原文，加同版根目錄 LICENSE、NOTICE、LICENSE-MIT，共五份純文字檔；Apache-2.0 與原 MIT 歸屬文字完整保留。無額外 runtime 或兄弟技能依賴，原六包、133 檔及 manifest 前六項不變，現為七包、138 檔。`ultracave`／`megacave`、對應別名、CLI、Proxy、Auto、hook 與其餘 Caveman 能力不在本輪；上游相對連結保留為來源參考，不假稱整套功能已安裝。
+
+相容規則集中[合作指南](../guides/collaboration.md#superpowers-與-caveman)：保留既有使用者授權、Astra 決策／Sol 實作、風險相稱的測試、充分同版證據重用及按需 worktree，不自動提交／清理或反覆確認已授權步驟。Caveman 只壓縮聊天表達，保留繁中、來源／證據、必要不確定性／未驗證狀態、否定與精確內容，不壓縮持久化成品或略過平台要求的進度；不全域強制啟動、不改設定，不承諾固定省 token 比例。
+
+核心維持 9,026 → 9,026 bytes（UTF-8），未新增核心規則；指南先提交再由核心重新釘選。歷史原文、安裝器保護、既有模型／設定／任務與其他技能不變。Git、本機檔案安裝、Superpowers 插件安裝／啟用、客戶端發現與人工接受另按實際證據回報，本紀錄不宣稱完成。

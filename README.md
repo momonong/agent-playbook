@@ -80,7 +80,7 @@ API 配額與供應商路由接入先讀 [服務指南](guides/service-integrati
 
 新裝置在已授權位置 clone 本 repo，既有裝置沿用原目錄取得已合併版本；Git 取得來源後仍須明確安裝。Git 與 Python 3.11+ 即可直接執行 `python scripts/install.py`；既有環境建議 `uv run --locked python scripts/install.py`。缺工具先回報，由該裝置對話依授權處理，不自動安裝全域 runtime。
 
-每台環境沿用或由使用者指定一個 `agent-playbook｜裝置名稱` 對話，負責本裝置開發環境與已確認習慣同步；遠端／WSL 分開核對。依[裝置契約與開場指示](docs/device-sync.md)，再走[安裝文件](docs/installation.md#一次安裝流程)的固定完整 SHA → 預覽 → 雙 hash CAS／備份安裝 → check。加 `--with-skills` 同步六份 manifest 技能（含 `ui-ux-pro-max`）；省略時保留原核心／指南安裝介面。直接貼核心的使用者仍不必執行。
+每台環境沿用或由使用者指定一個 `agent-playbook｜裝置名稱` 對話，負責本裝置開發環境與已確認習慣同步；遠端／WSL 分開核對。依[裝置契約與開場指示](docs/device-sync.md)，再走[安裝文件](docs/installation.md#一次安裝流程)的固定完整 SHA → 預覽 → 雙 hash CAS／備份安裝 → check。加 `--with-skills` 同步七份 manifest 技能（含 `ui-ux-pro-max`、基本 `caveman`）；Superpowers 走[官方插件與逐裝置核對](docs/installation.md#superpowers-官方插件)，不納入 manifest。省略技能選項時保留原核心／指南安裝介面。直接貼核心的使用者仍不必執行。
 
 同一版本提供核心、釘選指南及技能的相同 bytes；工具／插件、客戶端發現與人工接受另核對。安裝不改模型、effort 或其他設定、不搬技能位置、不恢復舊任務，也不保證既有對話重新載入。新共用技能的已授權安裝任務須一併納入快照與 manifest，避免只裝一台；完整保護與命令只在安裝文件維護。
 

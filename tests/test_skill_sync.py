@@ -391,7 +391,7 @@ class SkillSourceTests(unittest.TestCase):
         manifest_bytes = (repo / "skills/manifest.json").read_bytes()
         manifest = json.loads(manifest_bytes)
         expected_names = {"answer-me-with-html", "design-taste-frontend", "grill-me",
-                          "grilling", "career-profile-builder", "ui-ux-pro-max"}
+                          "grilling", "career-profile-builder", "ui-ux-pro-max", "caveman"}
         self.assertEqual({entry["name"] for entry in manifest["skills"]}, expected_names)
         source = {"manifest_sha256": digest(manifest_bytes), "packages": {}}
         for entry in manifest["skills"]:
@@ -403,7 +403,7 @@ class SkillSourceTests(unittest.TestCase):
             if "adoption_files" in entry:
                 self.assertTrue(set(actual) - set(entry["adoption_files"]) <= {"LICENSE", "THIRD_PARTY_NOTICES"})
                 self.assertTrue(all(actual[n] == h for n, h in entry["adoption_files"].items()))
-        # Exercise the real six-package payload on a new device and an exact
+        # Exercise the real seven-package payload on a new device and an exact
         # unmanaged installation. Runtime behavior is tested separately.
         for device, initial_status in (("new", "missing"), ("existing", "adopt")):
             home, skills = self.repo / device / ".codex", self.repo / device / "skills"

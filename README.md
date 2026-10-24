@@ -33,6 +33,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | [docs/device-sync.md](docs/device-sync.md) | 每台裝置的唯一承接對話、同步範圍與開場指示 |
 | [docs/update-2026-10-22-device-sync.md](docs/update-2026-10-22-device-sync.md) | 裝置同步、技能來源與保護規則的決策及需求映射 |
 | [skills/README.md](skills/README.md) | 共用個人技能快照、來源／授權與依賴 |
+| [docs/academic-research-skills.md](docs/academic-research-skills.md) | 六項學術技能的獨立安裝來源、用途、授權及驗證界線，尚未共用納管 |
 
 ## 儲存與定位
 
@@ -83,6 +84,8 @@ API 配額與供應商路由接入先讀 [服務指南](guides/service-integrati
 每台環境沿用或由使用者指定一個 `agent-playbook｜裝置名稱` 對話，負責本裝置開發環境與已確認習慣同步；遠端／WSL 分開核對。依[裝置契約與開場指示](docs/device-sync.md)，再走[安裝文件](docs/installation.md#一次安裝流程)的固定完整 SHA → 預覽 → 雙 hash CAS／備份安裝 → check。加 `--with-skills` 同步七份 manifest 技能（含 `ui-ux-pro-max`、基本 `caveman`）；Superpowers 走[官方插件與逐裝置核對](docs/installation.md#superpowers-官方插件)，不納入 manifest。省略技能選項時保留原核心／指南安裝介面。直接貼核心的使用者仍不必執行。
 
 同一版本提供核心、釘選指南及技能的相同 bytes；工具／插件、客戶端發現與人工接受另核對。安裝不改模型、effort 或其他設定、不搬技能位置、不恢復舊任務，也不保證既有對話重新載入。新共用技能的已授權安裝任務須一併納入快照與 manifest，避免只裝一台；完整保護與命令只在安裝文件維護。
+
+六項學術研究技能目前採固定上游來源的本機獨立安裝，未加入七包共用 manifest；`--with-skills` 不會同步它們。來源 pin、功能／runtime、ARS 非商業授權及 Windows 已測／未測範圍集中於[學術技能文件](docs/academic-research-skills.md)，跨裝置納管仍待完成。
 
 ## 回復
 

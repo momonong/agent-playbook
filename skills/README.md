@@ -2,6 +2,8 @@
 
 這裡保存七份已確認的可重用技能；`manifest.json` 是安裝器的唯一技能清單，`packages/` 是固定內容。安裝命令及衝突處理只在[跨裝置安裝文件](../docs/installation.md)維護。不含私人履歷、設定、憑證、聊天、快取或技能歷史；內建／插件技能由各客戶端核對，不 vendor。
 
+另有六項固定上游來源的學術技能完成本機獨立安裝，尚未加入此 manifest 或 `packages/`；可分享來源、用途、授權與驗證界線見[學術技能文件](../docs/academic-research-skills.md)。本目錄仍為七包、138 檔，共用安裝器不會同步那六包。
+
 | 技能 | 固定來源 | 本次內容 |
 |---|---|---|
 | answer-me-with-html | [QingYunA，7e71bc08](https://github.com/QingYunA/answer-me-with-html/tree/7e71bc08f3df214af10fe4636fd00f95294ec3e9/skills/answer-me-with-html) | v0.5.5 原始五檔，追加 root LICENSE／THIRD_PARTY_NOTICES |

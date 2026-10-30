@@ -82,6 +82,8 @@ uv run --locked python scripts/install.py --commit $playbookCommit --with-skills
 
 六項學術技能的本機獨立安裝另見[學術技能文件](academic-research-skills.md)，尚未納入上述 manifest；本安裝器不安裝、更新或核驗它們。其獨立 manifest／receipt 不能當成安裝器受管狀態，`--with-skills --check` 也不證明六包完整性、客戶端發現或功能。未來共用納管仍須完成相應交付，不放寬現有 `100644`、完整樹、CAS 或衝突檢查。
 
+[指定筆電的 Windows 模型存放規則](windows-model-storage.md)由本機個人技能 `local-model-storage` 承載，未納入共用 manifest；clone／本安裝器不會安裝它或設定 HF 環境變數，其檔案、客戶端與功能狀態另行核對。
+
 | 技能 | 必需／額外能力 |
 |---|---|
 | answer-me-with-html | 基本 HTML 需要 Node 20+；影片需要 Node 22+ 與 Chrome／Chromium／Edge，MP4 另需 ffmpeg |

@@ -6,6 +6,7 @@
 
 - 先記錄這次 OS、shell、原生／WSL／SSH／容器 scope、repo、Codex home、技能位置及客戶端。遠端與 WSL 是不同執行環境，不把本機路徑、環境或可達性套用過去；不在共用 repo 建私人裝置登錄表。
 - 共用來源由此 repo 的固定版本及 [skills/manifest.json](../skills/manifest.json) 管理；本機路徑、receipt、備份與使用者驗收留在該裝置。不同裝置先核對最新 main／既有工作，避免同時修改或重複接管同一目標。
+- 使用者本輪明確要求公開的[指定筆電 Windows 模型存放規則](windows-model-storage.md)是單一窄例外，不擴張為裝置設定登錄表；其路徑與本機個人技能不隨本流程套用至其他裝置。
 - Astra Ultra 負責討論、決策、推進及最後核對；Sol 6.1 Ultra subagent 承接已確認且已授權的實作。保留現有模型／深度／速度、其他設定與暫停狀態。具體規則仍以核心及固定指南為準。
 - 已授權的共用技能安裝／更新任務，交付須含可分享來源、固定版本、授權、依賴、完整快照與 manifest，再依[安裝流程](installation.md)預覽、套用、check；明確只做本機實驗時記錄例外。其他裝置在自己獲授權的同步階段套用，不暗中遠端更新。
 - 基本 Caveman 由 manifest 同步；Superpowers 走[官方插件與逐裝置核對](installation.md#superpowers-官方插件)，不進 manifest 或複製 cache／hook。檔案 check 不代替插件的安裝、啟用與實際入口核對。

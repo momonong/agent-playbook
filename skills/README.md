@@ -4,6 +4,8 @@
 
 另有六項固定上游來源的學術技能完成本機獨立安裝，尚未加入此 manifest 或 `packages/`；可分享來源、用途、授權與驗證界線見[學術技能文件](../docs/academic-research-skills.md)。本目錄仍為七包、138 檔，共用安裝器不會同步那六包。
 
+`local-model-storage` 是指定筆電原生 Windows 的本機個人技能，亦未加入此 manifest 或 `packages/`；單一存放規則及已安裝／已發現／未測功能的界線見[Windows 模型存放文件](../docs/windows-model-storage.md)，不作跨裝置技能預設。
+
 | 技能 | 固定來源 | 本次內容 |
 |---|---|---|
 | answer-me-with-html | [QingYunA，7e71bc08](https://github.com/QingYunA/answer-me-with-html/tree/7e71bc08f3df214af10fe4636fd00f95294ec3e9/skills/answer-me-with-html) | v0.5.5 原始五檔，追加 root LICENSE／THIRD_PARTY_NOTICES |

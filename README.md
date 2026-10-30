@@ -34,6 +34,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | [docs/update-2026-10-22-device-sync.md](docs/update-2026-10-22-device-sync.md) | 裝置同步、技能來源與保護規則的決策及需求映射 |
 | [skills/README.md](skills/README.md) | 共用個人技能快照、來源／授權與依賴 |
 | [docs/academic-research-skills.md](docs/academic-research-skills.md) | 六項學術技能的獨立安裝來源、用途、授權及驗證界線，尚未共用納管 |
+| [docs/windows-model-storage.md](docs/windows-model-storage.md) | 指定筆電原生 Windows 的單一模型存放規則與本機技能界線，不是跨裝置預設 |
 
 ## 儲存與定位
 

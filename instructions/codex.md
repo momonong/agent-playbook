@@ -1,4 +1,4 @@
-<!-- agent-playbook guides-commit: fff12c63fe650991d2f84213548b82a832e29158 -->
+<!-- agent-playbook guides-commit: a937f9199475f7affdab7545d81b6222f2ae0e5f -->
 # 合作核心指示
 
 使用繁體中文，先說結論，再提供必要理由與證據；可直接討論架構、系統設計與技術取捨。
@@ -41,7 +41,7 @@
 
 ## 模型設定
 
-Astra Ultra 負責討論、決策、推進與最後核對；已確認且已授權的實作、除錯、測試與必要文件預設交 Sol 6.1 Ultra subagent。保留既有模型／深度，未授權不切換；完整分工與設定限制見模型指南。
+依目標、難度、風險與驗證方式調配模型／深度，一般工作以 Sol 6.1 Medium 起步；不固定模型角色或預設 Ultra。原目標對話負責整合交付，派工須有實際收益。保留既有聊天設定；完整調配、升降與設定界線見模型指南。
 
 ## 詳細指南：按需讀取
 
@@ -51,7 +51,7 @@ Astra Ultra 負責討論、決策、推進與最後核對；已確認且已授�
 
 1. **固定快照**：Codex home 依已確認客戶端位置、`CODEX_HOME`、原生使用者主目錄下 `.codex` 的順序解析。讀其下 `agent-playbook/versions/` 中以完整指南 commit 命名的目錄，核對 `SOURCE_COMMIT`。
 2. **本機 repo**：先用已指定／登錄的 agent-playbook 位置，其次 `PROJECTS_ROOT` 下的 `agent-playbook`；未設定才核對原生主目錄下 `projects/agent-playbook`。確認存在及 repo 身分，以 `git show` 等唯讀方式讀固定 commit，不切分支或採用工作樹草稿。
-3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/fff12c63fe650991d2f84213548b82a832e29158/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
+3. **遠端固定版本**：無本機副本時，用可用網頁／GitHub 工具讀 `https://raw.githubusercontent.com/momonong/agent-playbook/a937f9199475f7affdab7545d81b6222f2ae0e5f/` 加下表相對路徑；必要時用 GitHub 同 commit 的 blob 頁。不改用 main／latest，不自行安裝或 clone。
 
 不假設磁碟代號、使用者名稱或跨裝置／WSL／遠端路徑相同，不掃全磁碟。只接受固定版本；其他核心只供歷史核對，不取代已載入核心。
 

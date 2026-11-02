@@ -20,12 +20,13 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | [guides/collaboration.md](guides/collaboration.md) | 單一目標對話、討論與執行、subagents、授權與必要交接 |
 | [guides/external-execution.md](guides/external-execution.md) | agy 等外部 CLI task 的交接、授權、接續及驗收 |
 | [guides/learning.md](guides/learning.md) | 每個指定專案的學習主軸、概念路線、案例與學習交接 |
-| [guides/model-selection.md](guides/model-selection.md) | Astra Ultra 目標責任、Sol 6.1 Ultra 實作分工與設定界線 |
+| [guides/model-selection.md](guides/model-selection.md) | 按目標調配模型／深度、Sol 6.1 Medium 一般起點、升降及設定界線 |
 | [guides/engineering.md](guides/engineering.md) | 工程決策、路徑、Git、Python、驗證、HTML 可讀交付與清理 |
 | [guides/service-integration.md](guides/service-integration.md) | 本機模型、API Quota Broker、私人 HTML 預覽、國網訓練與家用伺服器的入口及跨專案限制 |
 | [docs/migration-2026-09-30.md](docs/migration-2026-09-30.md) | 原規則映射、已確認變更與驗證方式 |
 | [docs/update-2026-10-18-model-and-branch-policy.md](docs/update-2026-10-18-model-and-branch-policy.md) | 模型分工、分支分類、短核心與按需必讀的決策及發布界線 |
-| [docs/update-2026-10-18-astra-ultra-ownership.md](docs/update-2026-10-18-astra-ultra-ownership.md) | 後續 Ultra 預設、Astra 全程負責與 Sol subagent 承接決策 |
+| [docs/update-2026-10-18-astra-ultra-ownership.md](docs/update-2026-10-18-astra-ultra-ownership.md) | 歷史 Ultra 固定分工決策，已由目標導向調配取代 |
+| [docs/update-2026-11-02-goal-based-model-selection.md](docs/update-2026-11-02-goal-based-model-selection.md) | 取消固定分工與 Ultra 日常預設，依交付目標及成本調配 |
 | [docs/update-2026-10-20-html-delivery.md](docs/update-2026-10-20-html-delivery.md) | 使用者當前裝置的 HTML 渲染交付與待啟用預覽服務決策 |
 | [docs/update-2026-10-20-html-preview-integration.md](docs/update-2026-10-20-html-preview-integration.md) | 工程驗證通過的私人 HTML 預覽之固定契約、授權範圍及正式接入 |
 | [archive/original-2026-09-30.md](archive/original-2026-09-30.md) | 不變的歷史原文，僅供比對，不屬當前指示 |
@@ -57,11 +58,11 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 
 對話按專案分類，名稱只寫核心目標，不強制 main／dev 前綴；學習、專利與歷史保留必要用途標記，完整命名規則見[合作指南](guides/collaboration.md#目標命名與接續)。
 
-Astra Ultra 負責討論、決策、推進與最後核對，已確認且已授權的實作預設交 Sol 6.1 Ultra subagent；工具操作與設定界線見模型指南。舊對話、既有設定與 learn／專利用途保留，不批次換模型、刪除、封存、改名、傳訊或恢復工作。
+原目標對話承接並整合交付，依目標、難度、風險與驗證方式調配模型／深度；一般工作以 Sol 6.1 Medium 起步，困難工作採足夠配置，派工須有實際收益。舊對話、其他設定與 learn／專利用途保留，不批次換模型、刪除、封存、改名、傳訊或恢復工作；完整選型及設定界線見模型指南。
 
 完整規則見 [合作指南](guides/collaboration.md)及[模型指南](guides/model-selection.md)，授權與取代範圍見 [2026-10-16 單一目標對話改版](docs/update-2026-10-16-goal-conversations.md)。這項政策取代先前固定分層及集中 main 回報規則；歷史更新紀錄只作追溯。
 
-分支入口與短核心／按需必讀見 [2026-10-18 首輪決策](docs/update-2026-10-18-model-and-branch-policy.md)，後續模型與承接方式以 [Astra Ultra 目標責任決策](docs/update-2026-10-18-astra-ultra-ownership.md)取代；指南提交、核心重新釘選與固定版本安裝依下方流程核對。
+分支入口與短核心／按需必讀見 [2026-10-18 首輪決策](docs/update-2026-10-18-model-and-branch-policy.md)，現行模型與承接方式以 [2026-11-02 目標導向決策](docs/update-2026-11-02-goal-based-model-selection.md)為準；先前 Astra／Sol 固定分工只作追溯。指南提交、核心重新釘選與固定版本安裝依下方流程核對。
 
 ## 開發與學習並行
 

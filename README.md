@@ -41,6 +41,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 - 已指定／登錄位置優先，其次為既有 `PROJECTS_ROOT` 下的 `agent-playbook`。未設定時，各平台的原生主目錄下 `projects/agent-playbook` 只是候選，需確認存在及 repo 身分；不固定使用者名稱、磁碟代號、OneDrive 或 Documents。repo 可放在其他已確認的位置。
 - repo 保存來源；核心原文與按需指南分開。指南固定在核心首行指定的 commit，本機可有同版快照，否則唯讀存取固定 GitHub 版本。普通 git pull、切分支或改草稿不自動變更已貼上的政策。
 - `<codex-home>` 是實際 `CODEX_HOME`，未設定時為使用者主目錄的 `.codex`。每台電腦獨立解析，不能複製其他電腦的絕對路徑。
+- 模型權重下載前，依核心核對實際執行主機／OS 並讀該裝置的存放規則；[指定筆電的 Windows 規則](docs/windows-model-storage.md)只用於該環境，SSH 到 Ubuntu 等情境依遠端自己的設定。
 
 安裝命令見[跨裝置安裝](docs/installation.md)；歷史決策由[遷移記錄](docs/migration-2026-09-30.md)追溯，已取代內容不作現行指令。服務與國網只按相關指南取得來源契約，不把操作細節複製進全域指示。
 

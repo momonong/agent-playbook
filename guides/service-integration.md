@@ -21,6 +21,7 @@
 - Gateway 有自己的 JSON 契約，不是 OpenAI／Gemini SDK 換 base URL 即可使用。先核對能力、同步或 queue、結果保存及錯誤語義；目前為可信合作式客戶端，client token 不提供專案／使用者 ACL，不能當公開多租戶隔離。具體 API、範例與限制只在 Broker 契約維護。
 - endpoint、主機、credential 及部署狀態依契約與授權現場核對；localhost 按主機／容器解析，程式或文件存在不代表服務已部署或帳號可用。後端使用合法 Broker client credential，不將 provider key 或 admin token 當一般接入憑證；金鑰不進前端、Git 或日誌。
 - 持久化原 request key 與工作關聯；timeout／unknown 先查原工作，不換 key、endpoint、instance 或供應商重送，不自行開付費 fallback。區分執行成功、答案完整性與用量結算；配額及免費資格須核對現況，不把 catalog／usage 當即時官方餘額。
+- 核對配額網站時，分別驗證入口與登入保護、內部 Broker 與帳本，以及已授權的供應商呼叫。遷移前依 Broker 契約對帳原帳本、佇列及未確認請求。原帳本無法取得時，保留歷史缺口及原工作狀態。由使用者決定是否另開新帳本，再依部署與派送各自的授權範圍處理。
 - 原應用目標對話負責 adapter、fixture、有限 live 驗收及直接回報使用者，先完成離線契約驗證，再依已授權資料／資源範圍呼叫服務。接入不授權修改 Broker、帳號／模型配置、worker、網路、部署或重啟；涉及共用主機另讀本指南的伺服器章節。Broker 維運與應用整合分別驗收，未完成的應用（含 OrderFlow）不因文件發布視為已接入。
 
 ## 私人 HTML 預覽：html-preview
@@ -54,6 +55,7 @@
 - 記錄所選完整 SHA、來源與查閱日期，同一階段固定使用；從該 SHA 先讀完整 `AGENTS.md`、`README.md`，再依任務讀 `docs/infrastructure.md`、`docs/operations.md`、`config/Caddyfile` 及相關日期化紀錄，相對引用也按同版解析。優先用 `git show`，不必切工作樹；確需另一工作樹時，只用 Git 列出的既有可用同 repo 工作樹讀同一 SHA，不自建副本或按資料夾名稱／時間挑選。無本機副本時，可用 GitHub 唯讀工具確認 repo／ref 後讀固定 SHA 的完整文件及引用。
 - 這是外部共用文件查閱規則，不接管該 repo 的其他任務。不為讀文件切分支、pull、stash、reset、clean，或覆寫、合併、提交未提交草稿、移除 worktree；必要時另讀當前 checkout 的本地規則以辨識限制，不以草稿冒充已發布來源。
 - 此 repo 是主機清單、SSH、資源、網路拓樸、服務設定及操作流程的共同來源；其他專案引用，不各自維護副本。最新文件不代表已部署；服務及共用設定變更仍須依下方現場核對與當次授權，不假設文件或部署存在。
+- 遷移或退役時，從 `docs/operations.md` 找適用的現況紀錄，再核對實際在役主機、後端和公開目錄。舊主機角色、轉發、部署包及收據保留供追溯。使用者暫停的服務、排程或資料救援維持暫停，恢復須有後續授權。
 - 部署／維運前，依上述固定版本讀 `docs/two-host-deployment.md` 的能力矩陣、唯讀 preflight 與操作界線。Doppler 憑證取得範圍、SSH／API 通道能力、當次使用者授權及 Codex 沙箱／正式批准分別核對，任一層不代表其他層已允許；具體 scope 與 root gate 由該契約維護。
 - 已授權且既有受限通道涵蓋的日常操作，完成 preflight 後直接執行、驗證及回報，不例行要求使用者貼指令或輸入 sudo。失敗先核對實際執行端的 CLI／版本、憑證與金鑰位置、主機／路徑及通道，可修正同一授權範圍內的既有金鑰選擇；區分憑證取得、連線／認證、通道 scope、使用者授權與沙箱／正式批准，不籠統回報「沒權限」。Doppler／受限通道失敗不改用管理身分或快取 fallback，不繞過實際存取控制／正式批准拒絕；不輸出秘密。
 - 2026-09-30 原始規則確認的入口約束是 Cloudflare Tunnel → HP Caddy → 應用；momonong.me 根路徑保留首頁。這是需保留／查證的架構約束，不是本指南對現場部署的健康證明。

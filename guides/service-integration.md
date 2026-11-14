@@ -5,6 +5,7 @@
 ## 本機模型：selfhost-models
 
 - 只有使用者要求本機模型，或專案已決定採用 selfhost-models 時接入；不要因指南存在就替每個專案接模型。
+- 應用要經共用 Quota HTTPS 使用本地或雲端模型時，先讀下方 [Quota 入口](#api-配額與供應商路由api-quota-broker)與[共用接入說明](../docs/quota-project-integration.md)；本節是直接整合 selfhost-models 的契約，不以其 worker 憑證取代專案 token。
 - 優先用已指定／登錄位置，否則按 [工程指南](engineering.md) 解析 `<projects-root>/selfhost-models`；先讀 `docs/client-integration.md`。
 - 本機文件不可讀時，可讀 [遠端接入契約](https://github.com/momonong/selfhost-models/blob/main/docs/client-integration.md)；遠端版本不代表本機部署，仍須核對。
 - 不推測 endpoint、能力、認證或錯誤語義。依契約確認位址與連線方式，再依序核對 `/health/ready`、`/v1/models`，使用實際 model id、backend 與 capabilities；契約與歷史規則衝突時先查證，不直接套用。
@@ -15,14 +16,16 @@
 
 ## API 配額與供應商路由：api-quota-broker
 
-- 自用／自架應用需要共用外部 AI API、配額管理或供應商路由時，先評估既有 `api-quota-broker` Gateway 與需求是否相符；不因入口存在就替換現有整合。它是應用後端的共用服務，不是 agy 等開發 task 執行者，也不自動代理 Codex 的模型請求。
-- 按 [工程指南](engineering.md) 定位已指定／登錄的 `api-quota-broker`，其次 `PROJECTS_ROOT`，未設定才核對原生主目錄下 `projects/api-quota-broker`。確認來源為 `momonong/api-quota-broker`，先讀 `README.md`、`docs/client-integration.md`；依契約再讀能力與維運文件，不套用參考 repo 的角色規則到接入專案。
-- 引用版本以接入計畫指定 commit 為準；未指定時核對本機 HEAD，從該 commit 讀完整文件並記錄 SHA、路徑與日期。無本機副本時，由 [GitHub 接入入口](https://github.com/momonong/api-quota-broker/blob/main/docs/client-integration.md) 解析所用 commit，再讀固定版本及必要引用。未提交草稿、聊天摘要及程式版本號不能冒充已發布文件版本；缺少必要全文時只暫停相依操作，不自行 clone。playbook 的 pin 不固定外部 repo；同一接入階段沿用已記錄版本，變更時核對差異。
-- Gateway 有自己的 JSON 契約，不是 OpenAI／Gemini SDK 換 base URL 即可使用。先核對能力、同步或 queue、結果保存及錯誤語義；目前為可信合作式客戶端，client token 不提供專案／使用者 ACL，不能當公開多租戶隔離。具體 API、範例與限制只在 Broker 契約維護。
-- endpoint、主機、credential 及部署狀態依契約與授權現場核對；localhost 按主機／容器解析，程式或文件存在不代表服務已部署或帳號可用。後端使用合法 Broker client credential，不將 provider key 或 admin token 當一般接入憑證；金鑰不進前端、Git 或日誌。
-- 持久化原 request key 與工作關聯；timeout／unknown 先查原工作，不換 key、endpoint、instance 或供應商重送，不自行開付費 fallback。區分執行成功、答案完整性與用量結算；配額及免費資格須核對現況，不把 catalog／usage 當即時官方餘額。
+- 自用／自架應用需要共用雲端或本地模型 API、配額管理或供應商路由時，先評估既有 `api-quota-broker` 與需求是否相符；不因入口存在就替換現有整合。它是應用後端的共用服務，不是 agy 等開發 task 執行者，也不自動代理 Codex 的模型請求。
+- 新接入先讀[共用接入說明與固定版完整手冊索引](../docs/quota-project-integration.md)，再讀 Broker 同版 `README.md`、`docs/developer-api.md` 及必要範例／契約。完整 SDK／API／維運手冊只在 Broker 維護；Playbook 不配送 SDK、token、模型或服務，也不套用參考 repo 的角色規則到接入專案。
+- 按 [工程指南](engineering.md) 定位已指定／登錄的 Broker repo 並確認來源為 `momonong/api-quota-broker`；可用 `git show` 讀固定版本，不採 dirty 工作樹。接入計畫已指定 commit 時沿用；新接入以共用說明記錄的已合併 SHA 為起點，更新時先核對可信遠端及差異，記錄完整 SHA、路徑與日期，同階段沿用。無本機副本就讀索引的固定 GitHub 版本；缺少必要全文只暫停相依操作，不自行 clone。Playbook 的 `guides-commit` 不會自動更新外部 Broker 版本。
+- SDK 2.0.0 `ProjectClient` 是 project-scoped HTTPS／OHTTP，使用各專案自己的 token、可信公開 profile 與持久 trust state；新 token 由管理端登錄 project／policy／limits 後私人發放，沒有自助申領。一般 scope、申請資料、安裝材料、可信 profile 與狀態保護依共用說明及 Broker 主手冊核對；不把網站密碼、Owner／legacy token、provider key 或 worker key 當成專案憑證。秘密不進前端、Git、聊天或日誌。
+- 敏感專案由伺服器鎖 `local_only` 並要求加密；離線、OOM、滿載、timeout／unknown 不改送雲端。`cloud_only` 須專案及資料獲准，SDK 加密到 HP 後，HP 仍會向 provider 提供必要明文；沒有 `auto`。HP／worker 是可信明文端點，Cloudflare 可見 metadata；應用 log／telemetry 也須符合資料界線。詳細政策與信任復原依同版手冊，不刪 trust state 或改 policy 當重試。
+- 新版具專案／scope 隔離；`docs/developer-api-legacy.md` 保留舊 SDK／明文 JSON，`docs/client-integration.md` 保留直接 Gateway／legacy 共用 token。**沒有專案 ACL 的限制只適用舊共用憑證**，不得套到新版 project API，也不將舊明文範例用於敏感 token／內容；沒有自動 legacy fallback。
+- Broker 有自己的契約，不能只改 OpenAI／Gemini／Node 或代理框架的 base URL。原應用需核對 adapter、輸入輸出／scope、結果期限與錯誤映射；支援平台及本地能力以固定手冊與驗收範圍為準，不因文件存在宣稱已部署、全部模型可用或應用已接入。endpoint／credential／現場狀態仍依契約及當次授權核對，localhost 按主機／容器解析。
+- 提交前持久保存原 request key、政策與工作關聯；catalog／explain 不推論，run／submit 會執行。timeout／unknown／404 先沿 status／wait／result 查原工作，不換 key、endpoint、instance 或供應商重送，不自行開付費 fallback；cancel 不等於停止。區分執行成功、答案完整性與用量結算；配額及免費資格須核對現況，不把 catalog／usage 當即時官方餘額。
 - 核對配額網站時，分別驗證入口與登入保護、內部 Broker 與帳本，以及已授權的供應商呼叫。遷移前依 Broker 契約對帳原帳本、佇列及未確認請求。原帳本無法取得時，保留歷史缺口及原工作狀態。由使用者決定是否另開新帳本，再依部署與派送各自的授權範圍處理。
-- 原應用目標對話負責 adapter、fixture、有限 live 驗收及直接回報使用者，先完成離線契約驗證，再依已授權資料／資源範圍呼叫服務。接入不授權修改 Broker、帳號／模型配置、worker、網路、部署或重啟；涉及共用主機另讀本指南的伺服器章節。Broker 維運與應用整合分別驗收，未完成的應用（含 OrderFlow）不因文件發布視為已接入。
+- 原應用目標對話負責 adapter、fixture、有限 live 驗收及直接回報使用者，先完成離線契約驗證，再依已授權資料／資源範圍呼叫服務。接入不授權修改 Broker、帳號／模型配置、worker、網路、部署或重啟；涉及共用主機另讀本指南的伺服器章節。Broker 維運與應用整合分別驗收，未完成的應用（含 Calcifer、OrderFlow）不因文件發布視為已接入。
 
 ## 私人 HTML 預覽：html-preview
 

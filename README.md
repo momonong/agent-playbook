@@ -23,6 +23,7 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 | [guides/model-selection.md](guides/model-selection.md) | 按目標調配模型／深度、Sol 6.1 Medium 一般起點、升降及設定界線 |
 | [guides/engineering.md](guides/engineering.md) | 工程決策、路徑、Git、Python、驗證、HTML 可讀交付與清理 |
 | [guides/service-integration.md](guides/service-integration.md) | 本機模型、API Quota Broker、私人 HTML 預覽、國網訓練與家用伺服器的入口及跨專案限制 |
+| [docs/quota-project-integration.md](docs/quota-project-integration.md) | 可交給新專案的 SDK 2.0 接入說明、token 申請、本地／雲端政策及固定版完整手冊索引 |
 | [docs/migration-2026-09-30.md](docs/migration-2026-09-30.md) | 原規則映射、已確認變更與驗證方式 |
 | [docs/update-2026-10-18-model-and-branch-policy.md](docs/update-2026-10-18-model-and-branch-policy.md) | 模型分工、分支分類、短核心與按需必讀的決策及發布界線 |
 | [docs/update-2026-10-18-astra-ultra-ownership.md](docs/update-2026-10-18-astra-ultra-ownership.md) | 歷史 Ultra 固定分工決策，已由目標導向調配取代 |
@@ -74,7 +75,9 @@ Windows、Linux、macOS 使用同一份文字；**不用改路徑、commit、變
 
 ## 共用 API 服務
 
-API 配額與供應商路由接入先讀 [服務指南](guides/service-integration.md#api-配額與供應商路由api-quota-broker)，再引用 Broker 已發布的接入契約。這是應用後端的共用 Gateway；文件更新不自動切換既有服務或 Codex 模型呼叫。版本與需求映射見 [2026-10-12 更新](docs/update-2026-10-12.md)。
+共用雲端／本地模型 API、配額與供應商路由接入先讀[服務指南](guides/service-integration.md#api-配額與供應商路由api-quota-broker)及[可交給新專案的接入說明](docs/quota-project-integration.md)，再讀其固定 Broker SHA 的完整 SDK／API／維運手冊。新版使用 SDK 2.0、各專案 token 與加密 HTTPS；舊 Gateway 共用 token 的限制分開辨識。完整契約由 Broker 維護，不在 Playbook 複製另一套。
+
+這是應用後端的共用服務；文件更新不自動切換既有服務或 Codex／agy 模型呼叫，也不表示 Calcifer 已接入。接入索引隨固定指南 Markdown 快照安裝，SDK 與 token 另由維護者交付；[本次遷移映射](docs/migration-2026-09-30.md#2026-11-14-quota-共用接入與-codex-入口)取代 [2026-10-12 入口](docs/update-2026-10-12.md)中以舊 client-integration 為首次接入的部分。
 
 ## 私人 HTML 交付
 

@@ -213,3 +213,15 @@ Caveman 固定 `JuliusBrussee/caveman` commit `bad48a0e1df55e05e3f52249afa35ecc1
 使用者縮小服務復原範圍並要求更新協作文件與指示詞。依[家用伺服器指南](../guides/service-integration.md#家用伺服器selfhost-servers)查在役主機及暫停項目，實際拓樸與個別服務狀態由基礎設施 repo 維護。[配額指南](../guides/service-integration.md#api-配額與供應商路由api-quota-broker)分開驗證網站、Broker 帳本及供應商呼叫，並保留原工作與歷史帳本缺口，供使用者決定是否另開帳本。
 
 核心由 9,255 → 9,264 bytes（UTF-8，增加 9 bytes），只調整主機遷移與退役的必讀觸發詞。指南先提交，核心的 `guides-commit` 與遠端固定來源共同指向該提交。Git 交付、裝置指示生效與服務上線以各自證據核對。
+
+## 2026-11-14 Quota 共用接入與 Codex 入口
+
+使用者在 Quota 目標對話要求把可直接交給其他專案的接入說明與完整使用手冊交接到 Agent Playbook，並明確要求完成合併、推送與 Codex 指示更新。本輪據原始人類訊息核對授權，承接獨立文件目標；不重新設計 API、不修改 Calcifer，也不發 token、改政策或呼叫模型。
+
+需求集中於[共用接入說明](quota-project-integration.md)：固定 `momonong/api-quota-broker` 已合併 commit `d03ee867c04bb7ed7039183db0b2ac4374ff5f91`，提供 SDK／API／範例／OpenAPI／加密管理／HP 維運／驗收及舊介面完整索引。完整權威手冊留在 Broker；本頁交代同版兩個 wheel、constraints、可信公開 profile、包雜湊及私人 token 申請，沒有可宣稱的 PyPI／GitHub Release 或自助 token 入口，不公開維護者本機交付路徑。
+
+[服務指南](../guides/service-integration.md#api-配額與供應商路由api-quota-broker)改以 `docs/developer-api.md` 為新接入主入口，將 SDK 2.0 project-scoped 加密 HTTPS 與 legacy 共用 token／明文 JSON 分開。這取代 [2026-10-12 決策](update-2026-10-12.md)中舊首次接入與無專案 ACL 的泛稱；保留不重派未知工作、配額證據、原應用驗收及服務變更授權。敏感 `local_only` 的 server-side 限制、不轉雲端、`cloud_only` 的明文端點界線、持久 key／trust state 與有限本地能力均依同版契約核對。Calcifer／其他 Node 框架仍需另做 adapter 及 scope 映射，文件交付不表示其已接入，不改 Codex／agy 訂閱路由或既有 Phase 0。
+
+核心由 9,264 → 9,293 bytes（UTF-8，增加 29 bytes），只在既有服務必讀表明列「共用雲端／本地模型 API」，使首次選擇雲端或敏感本地接入前讀到新版指南；SDK 用法、網址與維運流程不常駐核心。指南先提交再機械重新釘選核心的完整 `guides-commit` 及遠端 URL。既有安裝器會將普通 `docs/*.md` 納入該固定指南快照，因此無須修改程式即可讓新接入索引隨快照取得；SDK、token 及服務不由它安裝。
+
+驗證沿用 diff／UTF-8、連結與 anchors、固定 SHA／SDK 片段、歷史原文 hash、核心大小、指南完整性及秘密檢查；不新增測試框架、不重跑 GPU／provider。Git 提交、PR 合併、推送與本機固定版 preview／CAS／備份／check 分別核對。僅同步這台已確認 Codex home 的核心與指南，不帶 `--with-skills`，保留設定、模型、登入、插件、既有聊天與其他裝置；既有對話重新載入及人工接受另列，不能由檔案安裝成功推定。
